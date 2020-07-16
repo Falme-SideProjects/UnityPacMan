@@ -9,11 +9,6 @@ public class PlayerController : MonoBehaviour
         playerMovimentation = new PlayerMovimentation();
     }
 
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
         CheckInput();
