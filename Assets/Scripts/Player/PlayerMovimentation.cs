@@ -40,6 +40,7 @@ public class PlayerMovimentation
         }
 
         CheckWarp(screenLimit);
+        Debug.Log(GetPositionInGrid(new Vector2(-3.618f,4.02f), new Vector2(3.618f, -4.02f), new Vector2(28,31)));
     }
 
     public void CheckWarp(Vector2 limit)
@@ -51,19 +52,40 @@ public class PlayerMovimentation
         if (position.y > limit.y) position.y = -limit.y;
     }
 
+    public void SetWarpLimit(Vector2 newLimit)
+    {
+        this.screenLimit = newLimit;
+    }
+
     public Vector2 GetPositionInGrid(Vector2 initialPosition, Vector2 endPosition, Vector2 arrayLength)
     {
-        Vector2 corneredEndPosition = new Vector2(endPosition.x-initialPosition.x, endPosition.x - initialPosition.y);
+        Vector2 corneredEndPosition = new Vector2(endPosition.x-initialPosition.x, endPosition.y - initialPosition.y);
         Vector2 corneredPlayerPosition = new Vector2(GetPosition().x - initialPosition.x, GetPosition().y - initialPosition.y);
 
-        if (corneredPlayerPosition.x == 0) return Vector2.zero;
-        if (corneredPlayerPosition.x == corneredEndPosition.x) return new Vector2(arrayLength.x-1, 0);
-        return Vector2.zero;
+        int _x = GetPositionBetweenTwoNumbers((int)arrayLength.x, corneredEndPosition.x, corneredPlayerPosition.x);
+        int _y = GetPositionBetweenTwoNumbers((int)arrayLength.y, corneredEndPosition.y, corneredPlayerPosition.y);
+
+        return new Vector2(_x, _y);
     }
 
     //Function to find the closest number
-    public void GetPositionBetweenTwoNumbers()
+    public int GetPositionBetweenTwoNumbers(int arrayLength, float distance, float compareNumber)
     {
+        float numberGap = distance / (arrayLength-1);
+        float currentPosition = 0f;
+        float minimum = float.MaxValue;
+        int index=-1;
 
+        for (int a=0;a<arrayLength;a++)
+        {
+            currentPosition = numberGap * a;
+            if(Mathf.Abs(currentPosition - compareNumber) < minimum)
+            {
+                minimum = Mathf.Abs(currentPosition - compareNumber);
+                index = a;
+            }
+        }
+
+        return index;
     }
 }
