@@ -26,10 +26,10 @@ public class ScenarioMap
             {
                 if (_scenarioString.Length <= index)
                 {
-                    _map[h].Add( new ScenarioMazeElement('0'));
+                    _map[h].Add( new ScenarioMazeElement(ElementType.empty));
                     continue;
                 }
-                _map[h].Add(new ScenarioMazeElement(_scenarioString[index]));
+                _map[h].Add(new ScenarioMazeElement((ElementType)(int.Parse(_scenarioString[index].ToString()))));
             }
         }
 

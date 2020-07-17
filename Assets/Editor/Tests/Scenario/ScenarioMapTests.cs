@@ -50,11 +50,11 @@ namespace Tests
             List<List<ScenarioMazeElement>> _actual = scenarioMap.GetScenarioGrid(5, 5);
 
             Assert.AreEqual(5, _actual.Count);
-            Assert.AreEqual('1', _actual[0][0].elementChar);
-            Assert.AreEqual('0', _actual[1][1].elementChar);
-            Assert.AreEqual('0', _actual[1][2].elementChar);
-            Assert.AreEqual('1', _actual[2][2].elementChar);
-            Assert.AreEqual('1', _actual[4][4].elementChar);
+            Assert.AreEqual(ElementType.wall, _actual[0][0].elementChar);
+            Assert.AreEqual(ElementType.empty, _actual[1][1].elementChar);
+            Assert.AreEqual(ElementType.empty, _actual[1][2].elementChar);
+            Assert.AreEqual(ElementType.wall, _actual[2][2].elementChar);
+            Assert.AreEqual(ElementType.wall, _actual[4][4].elementChar);
         }
 
 
@@ -70,11 +70,11 @@ namespace Tests
             List<List<ScenarioMazeElement>> _actual = scenarioMap.GetScenarioGrid(5, 5);
 
             Assert.AreEqual(5, _actual.Count);
-            Assert.AreEqual('1', _actual[0][0].elementChar);
-            Assert.AreEqual('0', _actual[1][1].elementChar);
-            Assert.AreEqual('0', _actual[1][2].elementChar);
-            Assert.AreEqual('1', _actual[2][2].elementChar);
-            Assert.AreEqual('0', _actual[4][3].elementChar);
+            Assert.AreEqual(ElementType.wall, _actual[0][0].elementChar);
+            Assert.AreEqual(ElementType.empty, _actual[1][1].elementChar);
+            Assert.AreEqual(ElementType.empty, _actual[1][2].elementChar);
+            Assert.AreEqual(ElementType.wall, _actual[2][2].elementChar);
+            Assert.AreEqual(ElementType.empty, _actual[4][3].elementChar);
         }
 
         [Test]

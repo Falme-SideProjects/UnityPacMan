@@ -54,7 +54,7 @@ public class ScenarioController : MonoBehaviour
         {
             for (int w = 0; w < this.scenarioGrid[h].Count; w++)
             {
-                if (this.scenarioGrid[h][w].elementChar.Equals('0')) continue;
+                if (this.scenarioGrid[h][w].elementChar.Equals(ElementType.empty)) continue;
 
                 Vector3 _tilePosition = Vector3.right * scenarioMap.GetCenteredTilePositionByIndex(levelWidth, w, distance);
                 _tilePosition += Vector3.down * scenarioMap.GetCenteredTilePositionByIndex(levelHeight, h, distance);
@@ -65,10 +65,10 @@ public class ScenarioController : MonoBehaviour
 
                 switch(this.scenarioGrid[h][w].elementChar)
                 {
-                    case '2':
+                    case ElementType.pacdot:
                         this.scenarioGrid[h][w].elementSpriteRenderer.sprite = dotSprite;
                         break;
-                    case '3':
+                    case ElementType.power:
                         tileObject.GetComponent<SpriteRenderer>().color = Color.green;
                         break;
                 }
@@ -102,19 +102,19 @@ public class ScenarioController : MonoBehaviour
 
         if (_y != 0)
             _movementPermission.
-                SetOneMovePermission(Direction.up, !scenarioGrid[_y - 1][_x].elementChar.Equals('1'));
+                SetOneMovePermission(Direction.up, !scenarioGrid[_y - 1][_x].elementChar.Equals(ElementType.wall));
 
         if (_y != levelHeight-1)
             _movementPermission.
-                SetOneMovePermission(Direction.down, !scenarioGrid[_y + 1][_x].elementChar.Equals('1'));
+                SetOneMovePermission(Direction.down, !scenarioGrid[_y + 1][_x].elementChar.Equals(ElementType.wall));
 
         if (_x != 0)
             _movementPermission.
-                SetOneMovePermission(Direction.left, !scenarioGrid[_y][_x-1].elementChar.Equals('1'));
+                SetOneMovePermission(Direction.left, !scenarioGrid[_y][_x-1].elementChar.Equals(ElementType.wall));
 
         if (_x != levelWidth - 1)
             _movementPermission.
-                SetOneMovePermission(Direction.right, !scenarioGrid[_y][_x+1].elementChar.Equals('1'));
+                SetOneMovePermission(Direction.right, !scenarioGrid[_y][_x+1].elementChar.Equals(ElementType.wall));
 
     }
 
@@ -124,8 +124,8 @@ public class ScenarioController : MonoBehaviour
         int _x = (int)characterPosition.x;
         int _y = (int)characterPosition.y;
 
-        if(scenarioGrid[_y][_x].elementChar.Equals('2') ||
-            scenarioGrid[_y][_x].elementChar.Equals('3'))
+        if(scenarioGrid[_y][_x].elementChar.Equals(ElementType.pacdot) ||
+            scenarioGrid[_y][_x].elementChar.Equals(ElementType.power))
         {
             scenarioGrid[_y][_x].elementSpriteRenderer.enabled = false;
         }

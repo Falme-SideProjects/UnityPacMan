@@ -11,5 +11,6 @@ public enum ElementType
     empty,
     wall,
     pacdot,
-    power
+    power,
+    door
 }

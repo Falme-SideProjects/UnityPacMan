@@ -2,10 +2,11 @@
 
 public class ScenarioMazeElement
 {
-    public char elementChar;
+    public ElementType elementChar;
     public SpriteRenderer elementSpriteRenderer;
+    public bool elementCollectable;
 
-    public ScenarioMazeElement(char _elementChar)
+    public ScenarioMazeElement(ElementType _elementChar)
     {
         this.elementChar = _elementChar;
     }
