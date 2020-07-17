@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
 
     private void RefreshPlayer()
     {
-        this.transform.position = playerMovimentation.GetPosition();
+        this.transform.position = 
+            new Vector3(playerMovimentation.GetPosition().x,
+                        playerMovimentation.GetPosition().y,
+                        transform.position.z);
     }
 }

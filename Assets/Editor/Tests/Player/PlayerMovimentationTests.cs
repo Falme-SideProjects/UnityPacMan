@@ -66,5 +66,66 @@ namespace Tests
             Assert.AreEqual(_expected, _actual);
         }
 
+        [Test]
+        [TestCase(-4.1f, 0f, 4.0f, 0f)]
+        [TestCase(4.1f, 0f, -4.0f, 0f)]
+        [TestCase(4.01f, 0f, -4.0f, 0f)]
+        [TestCase(-4.01f, 0f, 4.0f, 0f)]
+        [TestCase(-4.0f, 0f, -4.0f, 0f)]
+        [TestCase(4.0f, 0f, -2.0f, 0f, 2f)]
+        [TestCase(-4.0f, 3f, 2.0f, 3f, 2f, 4f)]
+        [TestCase(-4.0f, 3f, 2.0f, -2f, 2f, 2f)]
+        public void CheckWarp_PlayerWentTooFarInHorizontalDirection_WarpPlayerToOtherSide(float _positionX,
+                                                                                        float _positionY,
+                                                                                        float _expectedX,
+                                                                                        float _expectedY,
+                                                                                        float _limitX=4f,
+                                                                                        float _limitY=4f)
+        {
+            playerMovimentation.SetPosition(new Vector2(_positionX, _positionY));
+
+            playerMovimentation.CheckWarp(new Vector2(_limitX, _limitY));
+
+            Vector2 _result = playerMovimentation.GetPosition();
+
+            Vector2 _expected = new Vector2(_expectedX, _expectedY);
+
+            Assert.AreEqual(_expected, _result);
+        }
+
+        [Test]
+        [TestCase(10f, 10f, 30f, 40f, 10f, 10f, 3, 4, 0, 0)]
+        [TestCase(10f, 10f, 30f, 40f, 20f, 10f, 3, 4, 1, 0)]
+        [TestCase(10f, 10f, 30f, 40f, 30f, 10f, 3, 4, 2, 0)]
+        public void GetPositionInGrid_GivenGameGrid_ReturnPlayerVector2GridPosition(float _initialGridX,
+                                                                                    float _initialGridY,
+                                                                                    float _endGridX,
+                                                                                    float _endGridY,
+                                                                                    float _playerPositionX,
+                                                                                    float _playerPositionY,
+                                                                                    int _lengthX,
+                                                                                    int _lengthY,
+                                                                                    int _expectedX,
+                                                                                    int _expectedY)
+        {
+
+            Vector2 _initialPosition = new Vector2(_initialGridX, _initialGridY);
+            Vector2 _endPosition = new Vector2(_endGridX, _endGridY);
+            Vector2 _length = new Vector2(_lengthX, _lengthY);
+
+            playerMovimentation.SetPosition(new Vector2(_playerPositionX, _playerPositionY));
+
+            Vector2 _result = playerMovimentation.GetPositionInGrid(_initialPosition, _endPosition, _length);
+
+            Vector2 _expected = new Vector2(_expectedX, _expectedY);
+            Assert.AreEqual(_expected, _result);
+        }
+
+        [Test]
+        public void GetPositionBetweenTwoNumbers_RandomNumberAddedTo_ReturnClosestNumberInLength()
+        {
+
+        }
+
     }
 }
