@@ -19,7 +19,7 @@ namespace Tests
         [Test]
         public void GetScenarioGrid_EmptyGrid_ReturnEmptyList()
         {
-            List<List<char>> _actual = scenarioMap.GetScenarioGrid(10, 10);
+            List<List<ScenarioMazeElement>> _actual = scenarioMap.GetScenarioGrid(10, 10);
 
             Assert.AreEqual(0, _actual.Count);
         }
@@ -32,7 +32,7 @@ namespace Tests
                                         "101" +
                                         "111");
 
-            List<List<char>> _actual = scenarioMap.GetScenarioGrid(3, 3);
+            List<List<ScenarioMazeElement>> _actual = scenarioMap.GetScenarioGrid(3, 3);
 
             Assert.AreEqual(3, _actual.Count);
         }
@@ -47,14 +47,14 @@ namespace Tests
                                         "10001" +
                                         "11111");
 
-            List<List<char>> _actual = scenarioMap.GetScenarioGrid(5, 5);
+            List<List<ScenarioMazeElement>> _actual = scenarioMap.GetScenarioGrid(5, 5);
 
             Assert.AreEqual(5, _actual.Count);
-            Assert.AreEqual('1', _actual[0][0]);
-            Assert.AreEqual('0', _actual[1][1]);
-            Assert.AreEqual('0', _actual[1][2]);
-            Assert.AreEqual('1', _actual[2][2]);
-            Assert.AreEqual('1', _actual[4][4]);
+            Assert.AreEqual('1', _actual[0][0].elementChar);
+            Assert.AreEqual('0', _actual[1][1].elementChar);
+            Assert.AreEqual('0', _actual[1][2].elementChar);
+            Assert.AreEqual('1', _actual[2][2].elementChar);
+            Assert.AreEqual('1', _actual[4][4].elementChar);
         }
 
 
@@ -67,14 +67,14 @@ namespace Tests
                                             "10001" +
                                             "1");
 
-            List<List<char>> _actual = scenarioMap.GetScenarioGrid(5, 5);
+            List<List<ScenarioMazeElement>> _actual = scenarioMap.GetScenarioGrid(5, 5);
 
             Assert.AreEqual(5, _actual.Count);
-            Assert.AreEqual('1', _actual[0][0]);
-            Assert.AreEqual('0', _actual[1][1]);
-            Assert.AreEqual('0', _actual[1][2]);
-            Assert.AreEqual('1', _actual[2][2]);
-            Assert.AreEqual('0', _actual[4][3]);
+            Assert.AreEqual('1', _actual[0][0].elementChar);
+            Assert.AreEqual('0', _actual[1][1].elementChar);
+            Assert.AreEqual('0', _actual[1][2].elementChar);
+            Assert.AreEqual('1', _actual[2][2].elementChar);
+            Assert.AreEqual('0', _actual[4][3].elementChar);
         }
 
         [Test]

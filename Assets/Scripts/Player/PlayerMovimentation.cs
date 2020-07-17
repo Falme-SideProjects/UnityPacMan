@@ -51,7 +51,7 @@ public class PlayerMovimentation
         }
 
         CheckWarp(screenLimit);
-        Debug.Log(GetPositionInGrid(new Vector2(-3.618f,4.02f), new Vector2(3.618f, -4.02f), new Vector2(28,31)));
+        //Debug.Log(GetPositionInGrid(new Vector2(-3.618f,4.02f), new Vector2(3.618f, -4.02f), new Vector2(28,31)));
     }
 
     public void CheckWarp(Vector2 limit)

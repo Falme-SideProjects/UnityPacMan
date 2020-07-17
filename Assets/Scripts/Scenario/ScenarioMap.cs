@@ -10,26 +10,26 @@ public class ScenarioMap
         return scenarioString;
     }
 
-    public List<List<char>> GetScenarioGrid(int width, int height)
+    public List<List<ScenarioMazeElement>> GetScenarioGrid(int width, int height)
     {
-        if (GetScenarioString().Equals(string.Empty)) return new List<List<char>>();
+        if (GetScenarioString().Equals(string.Empty)) return new List<List<ScenarioMazeElement>>();
 
-        List<List<char>> _map = new List<List<char>>();
+        List<List<ScenarioMazeElement>> _map = new List<List<ScenarioMazeElement>>();
         int index = 0;
         string _scenarioString = GetScenarioString();
 
         for (int h = 0; h < height; h++)
         {
-            _map.Add(new List<char>());
+            _map.Add(new List<ScenarioMazeElement>());
 
             for (int w = 0; w < width; w++, index++)
             {
                 if (_scenarioString.Length <= index)
                 {
-                    _map[h].Add('0');
+                    _map[h].Add( new ScenarioMazeElement('0'));
                     continue;
                 }
-                _map[h].Add(_scenarioString[index]);
+                _map[h].Add(new ScenarioMazeElement(_scenarioString[index]));
             }
         }
 

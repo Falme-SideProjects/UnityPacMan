@@ -30,4 +30,9 @@ public class PlayerController : MonoBehaviour
                         playerMovimentation.GetPosition().y,
                         transform.position.z);
     }
+
+    public PlayerMovimentation GetPlayerMovimentation()
+    {
+        return this.playerMovimentation;
+    }
 }

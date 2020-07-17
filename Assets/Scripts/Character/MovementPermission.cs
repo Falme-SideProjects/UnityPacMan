@@ -27,4 +27,24 @@ public class MovementPermission
         this.right = _right;
         this.down = _down;
     }
+
+
+    public void SetOneMovePermission(Direction direction, bool _value)
+    {
+        switch (direction)
+        {
+            case Direction.up: 
+                this.up = _value;
+                break;
+            case Direction.left: 
+                this.left = _value;
+                break;
+            case Direction.right: 
+                this.right = _value;
+                break;
+            case Direction.down: 
+                this.down = _value;
+                break;
+        }
+    }
 }

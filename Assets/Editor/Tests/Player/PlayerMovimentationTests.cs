@@ -129,7 +129,7 @@ namespace Tests
         }
 
         [Test]
-        [TestCase(4,6,0f,0)]
+        [TestCase(4, 6, 0f, 0)]
         [TestCase(4, 6, 2f, 1)]
         [TestCase(4, 6, 4f, 2)]
         [TestCase(4, 6, 6f, 3)]
