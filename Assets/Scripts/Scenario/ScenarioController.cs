@@ -1,16 +1,33 @@
-﻿using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
-using UnityEngine;
 
 public class ScenarioController : MonoBehaviour
 {
-    private string scenarioString;
+    ScenarioMap scenarioMap;
+
+    [Header("Data")]
+    [SerializeField] private float distance = 1f;
+    [SerializeField] private int levelWidth, levelHeight;
+
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject tile; 
+
+    private void Awake()
+    {
+        scenarioMap = new ScenarioMap();
+
+        scenarioMap.SetScenarioString("1111111111111111111111111111" +
+                                      "1000000000000000000000000001" +
+                                      "1000000000010000000000000001" +
+                                      "1000000000000000000000000001" +
+                                      "1111111111111111111111111111");
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        SpawnScenario();
     }
 
     // Update is called once per frame
@@ -19,40 +36,23 @@ public class ScenarioController : MonoBehaviour
         
     }
 
-    public string GetScenarioString()
+    private void SpawnScenario()
     {
-        if (scenarioString == null) scenarioString = string.Empty;
-        return scenarioString;
-    }
+        List<List<char>> scenarioGrid = scenarioMap.GetScenarioGrid(levelWidth, levelHeight);
 
-    public List<List<char>> GetScenarioGrid(int width, int height)
-    {
-        if(GetScenarioString().Equals(string.Empty)) return new List<List<char>>();
-
-        List<List<char>> _map = new List<List<char>>();
-        int index = 0;
-        string _scenarioString = GetScenarioString();
-
-        for (int h=0; h<height; h++)
+        for(int h=0; h<scenarioGrid.Count; h++)
         {
-            _map.Add(new List<char>());
-
-            for (int w = 0; w < width; w++, index++)
+            for (int w = 0; w < scenarioGrid[h].Count; w++)
             {
-                if(_scenarioString.Length <= index)
-                {
-                    _map[h].Add('0');
-                    continue;
-                }
-                _map[h].Add(_scenarioString[index]);
+                if (scenarioGrid[h][w].Equals('0')) continue;
+
+                Vector3 _tilePosition = Vector3.right * scenarioMap.GetCenteredTilePositionByIndex(levelWidth, w, distance);
+                _tilePosition += Vector3.down * scenarioMap.GetCenteredTilePositionByIndex(levelHeight, h, distance);
+
+                Instantiate(tile, _tilePosition, Quaternion.identity, transform);
             }
         }
-
-        return _map;
     }
 
-    public void SetScenarioString(string scenario)
-    {
-        scenarioString = scenario;
-    }
+    
 }
