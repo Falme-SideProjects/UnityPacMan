@@ -46,5 +46,6 @@ MonoBehaviour:
   distance: 0.268
   levelWidth: 28
   levelHeight: 31
+  mapText: {fileID: 4900000, guid: 25b517265473ffc4381d7ba44b302690, type: 3}
   tile: {fileID: 7034929804800192837, guid: 64e8a3e0cf79d4a4c901c79c1184bb15, type: 3}
   dotSprite: {fileID: 86815202987383470, guid: bc1f6d9ae65ec00408a91f7a2f7c9b62, type: 3}
