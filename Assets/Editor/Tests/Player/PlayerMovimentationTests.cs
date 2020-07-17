@@ -61,7 +61,6 @@ namespace Tests
             playerMovimentation.Move(direction, _delta);
 
             Vector2 _actual = playerMovimentation.GetPosition();
-
             Vector2 _expected = new Vector2(_expectedX, _expectedY);
 
             Assert.AreEqual(_expected, _actual);
@@ -84,11 +83,9 @@ namespace Tests
                                                                                         float _limitY=4f)
         {
             playerMovimentation.SetPosition(new Vector2(_positionX, _positionY));
-
             playerMovimentation.CheckWarp(new Vector2(_limitX, _limitY));
 
             Vector2 _result = playerMovimentation.GetPosition();
-
             Vector2 _expected = new Vector2(_expectedX, _expectedY);
 
             Assert.AreEqual(_expected, _result);
@@ -145,7 +142,6 @@ namespace Tests
 
             int _result = playerMovimentation.GetPositionBetweenTwoNumbers(_arrayLength, _distance, _compareNumber);
 
-            int _expected = _expectedPosition;
             Assert.AreEqual(_expectedPosition, _result);
         }
 

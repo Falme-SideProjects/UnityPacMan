@@ -3,12 +3,20 @@ using UnityEngine;
 
 public class PlayerMovimentation
 {
+    private MovementPermission movementPermission;
+
     private Vector2 position;
     private Vector2 screenLimit;
 
     public PlayerMovimentation()
     {
+        movementPermission = new MovementPermission();
         screenLimit = new Vector2(4f, 10f);
+    }
+
+    public MovementPermission GetMovementPermission()
+    {
+        return this.movementPermission;
     }
 
     public Vector2 GetPosition()
@@ -23,7 +31,10 @@ public class PlayerMovimentation
 
     public void Move(Direction direction, float delta=1f)
     {
-        switch(direction)
+        if (!movementPermission.CanMoveAt(direction))
+            return;
+
+        switch (direction)
         {
             case Direction.up:
                 this.position += Vector2.up * delta;
