@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Linq.Expressions;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerMovimentation
@@ -6,6 +7,7 @@ public class PlayerMovimentation
     private MovementPermission movementPermission;
 
     private Vector2 position;
+    private Vector2 initialPosition;
     private Vector2 screenLimit;
 
     public PlayerMovimentation()
@@ -17,6 +19,21 @@ public class PlayerMovimentation
     public MovementPermission GetMovementPermission()
     {
         return this.movementPermission;
+    }
+
+    public Vector2 GetInitialPosition()
+    {
+        return this.initialPosition;
+    }
+
+    public void SetInitialPosition(Vector2 newInitialPosition)
+    {
+        this.initialPosition = newInitialPosition;
+    }
+
+    public void ResetPosition()
+    {
+        this.SetPosition(this.GetInitialPosition());
     }
 
     public Vector2 GetPosition()

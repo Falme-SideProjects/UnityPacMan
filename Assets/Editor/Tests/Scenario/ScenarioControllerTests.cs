@@ -17,20 +17,5 @@ namespace Tests
             scenarioController = new GameObject().AddComponent<ScenarioController>();
         }
 
-        /*private List<List<ScenarioMazeElement>> GetDummyGrid()
-        {
-            List<List<ScenarioMazeElement>> _list = new List<List<ScenarioMazeElement>>();
-
-            _list.Add(new List<ScenarioMazeElement>());
-            _list.Add(new List<ScenarioMazeElement>());
-
-
-            _list[0].Add(new ScenarioMazeElement() { elementSpriteRenderer = new Spr });
-
-        }
-
-        [Test]
-        public void */
-
     }
 }

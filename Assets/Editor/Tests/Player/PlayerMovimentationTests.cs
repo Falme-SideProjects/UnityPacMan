@@ -145,5 +145,47 @@ namespace Tests
             Assert.AreEqual(_expectedPosition, _result);
         }
 
+        [Test]
+        public void GetInitialPosition_DidNotChanged_ReturnZero()
+        {
+            Vector2 _actual = playerMovimentation.GetInitialPosition();
+            Assert.AreEqual(Vector2.zero, _actual);
+        }
+
+        [Test]
+        public void SetInitialPosition_SetNewValue_ReturnNewInitialPosition()
+        {
+            playerMovimentation.SetInitialPosition(new Vector2(1f, 10f));
+
+            Vector2 _actual = playerMovimentation.GetInitialPosition();
+            Assert.AreEqual(new Vector2(1f, 10f), _actual);
+        }
+
+
+
+        [Test]
+        public void SetInitialPosition_SetNewValueDontChangePlayerPosition_ReturnOldPlayerPosition()
+        {
+            playerMovimentation.SetPosition(new Vector2(12f, 333f));
+            playerMovimentation.SetInitialPosition(new Vector2(1f, 10f));
+
+            Vector2 _actual = playerMovimentation.GetPosition();
+            Assert.AreNotEqual(new Vector2(1f, 10f), _actual);
+        }
+
+
+        [Test]
+        public void ResetPosition_ResetPlayerPosition_MovePlayerPositionToInitialPosition()
+        {
+            playerMovimentation.SetInitialPosition(new Vector2(1f, 10f));
+            playerMovimentation.SetPosition(new Vector2(12f, 333f));
+
+            playerMovimentation.ResetPosition();
+
+            Vector2 _actual = playerMovimentation.GetPosition();
+            Assert.AreEqual(new Vector2(1f, 10f), _actual);
+        }
+
+
     }
 }

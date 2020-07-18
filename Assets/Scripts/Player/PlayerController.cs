@@ -10,7 +10,8 @@ public class PlayerController : MonoBehaviour
     {
         playerMovimentation = new PlayerMovimentation();
 
-        playerMovimentation.SetPosition(initialPlayerPosition);
+        playerMovimentation.SetInitialPosition(initialPlayerPosition);
+        playerMovimentation.ResetPosition();
     }
 
     void Update()
@@ -22,9 +23,9 @@ public class PlayerController : MonoBehaviour
     private void CheckInput()
     {
         if (Input.GetKey(KeyCode.UpArrow)) playerMovimentation.Move(Direction.up, Time.deltaTime);
-        else if (Input.GetKey(KeyCode.LeftArrow)) playerMovimentation.Move(Direction.left, Time.deltaTime);
-        else if (Input.GetKey(KeyCode.RightArrow)) playerMovimentation.Move(Direction.right, Time.deltaTime);
         else if (Input.GetKey(KeyCode.DownArrow)) playerMovimentation.Move(Direction.down, Time.deltaTime);
+        if (Input.GetKey(KeyCode.LeftArrow)) playerMovimentation.Move(Direction.left, Time.deltaTime);
+        else if (Input.GetKey(KeyCode.RightArrow)) playerMovimentation.Move(Direction.right, Time.deltaTime);
     }
 
     private void RefreshPlayer()

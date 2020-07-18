@@ -62,7 +62,7 @@ public class ScenarioController : MonoBehaviour
         {
             for (int w = 0; w < this.scenarioGrid[h].Count; w++)
             {
-                if (this.scenarioGrid[h][w].elementChar.Equals(ElementType.empty)) continue;
+                if (this.scenarioGrid[h][w].elementType.Equals(ElementType.empty)) continue;
 
                 Vector3 _tilePosition = Vector3.right * scenarioMap.GetCenteredTilePositionByIndex(levelWidth, w, distance);
                 _tilePosition += Vector3.down * scenarioMap.GetCenteredTilePositionByIndex(levelHeight, h, distance);
@@ -71,7 +71,7 @@ public class ScenarioController : MonoBehaviour
 
                 this.scenarioGrid[h][w].elementSpriteRenderer = tileObject.GetComponent<SpriteRenderer>();
 
-                switch(this.scenarioGrid[h][w].elementChar)
+                switch(this.scenarioGrid[h][w].elementType)
                 {
                     case ElementType.pacdot:
                         this.scenarioGrid[h][w].elementSpriteRenderer.sprite = dotSprite;
@@ -89,16 +89,19 @@ public class ScenarioController : MonoBehaviour
     private void ResetScenario()
     {
         for (int h = 0; h < this.scenarioGrid.Count; h++)
-        {
             for (int w = 0; w < this.scenarioGrid[h].Count; w++)
-            {
-                if(this.scenarioGrid[h][w].elementChar.Equals(ElementType.pacdot) ||
-                    this.scenarioGrid[h][w].elementChar.Equals(ElementType.power))
-                {
-                    this.scenarioGrid[h][w].elementSpriteRenderer.enabled = true;
-                    this.scenarioGrid[h][w].elementCollectable = true;
-                }
-            }
+                ResetScenarioCell(this.scenarioGrid[h][w]);
+
+        playerMovimentation.ResetPosition();
+    }
+
+    private void ResetScenarioCell(ScenarioMazeElement mazeElement)
+    {
+        if (mazeElement.elementType.Equals(ElementType.pacdot) ||
+                    mazeElement.elementType.Equals(ElementType.power))
+        {
+            mazeElement.elementSpriteRenderer.enabled = true;
+            mazeElement.elementCollectable = true;
         }
     }
 
@@ -128,19 +131,19 @@ public class ScenarioController : MonoBehaviour
 
         if (_y != 0)
             _movementPermission.
-                SetOneMovePermission(Direction.up, !scenarioGrid[_y - 1][_x].elementChar.Equals(ElementType.wall));
+                SetOneMovePermission(Direction.up, !scenarioGrid[_y - 1][_x].elementType.Equals(ElementType.wall));
 
         if (_y != levelHeight-1)
             _movementPermission.
-                SetOneMovePermission(Direction.down, !scenarioGrid[_y + 1][_x].elementChar.Equals(ElementType.wall));
+                SetOneMovePermission(Direction.down, !scenarioGrid[_y + 1][_x].elementType.Equals(ElementType.wall));
 
         if (_x != 0)
             _movementPermission.
-                SetOneMovePermission(Direction.left, !scenarioGrid[_y][_x-1].elementChar.Equals(ElementType.wall));
+                SetOneMovePermission(Direction.left, !scenarioGrid[_y][_x-1].elementType.Equals(ElementType.wall));
 
         if (_x != levelWidth - 1)
             _movementPermission.
-                SetOneMovePermission(Direction.right, !scenarioGrid[_y][_x+1].elementChar.Equals(ElementType.wall));
+                SetOneMovePermission(Direction.right, !scenarioGrid[_y][_x+1].elementType.Equals(ElementType.wall));
 
     }
 
@@ -150,8 +153,8 @@ public class ScenarioController : MonoBehaviour
         int _x = (int)characterPosition.x;
         int _y = (int)characterPosition.y;
 
-        if(scenarioGrid[_y][_x].elementChar.Equals(ElementType.pacdot) ||
-            scenarioGrid[_y][_x].elementChar.Equals(ElementType.power))
+        if(scenarioGrid[_y][_x].elementType.Equals(ElementType.pacdot) ||
+            scenarioGrid[_y][_x].elementType.Equals(ElementType.power))
         {
             if(scenarioGrid[_y][_x].elementCollectable)
             {
@@ -159,10 +162,9 @@ public class ScenarioController : MonoBehaviour
                 scenarioGrid[_y][_x].elementSpriteRenderer.enabled = false;
                 pelletsTotal++;
 
-                if (scenarioGrid[_y][_x].elementChar.Equals(ElementType.pacdot)) scoreController.Score.AddScoreBasedOnItem(Items.pacdot);
+                if (scenarioGrid[_y][_x].elementType.Equals(ElementType.pacdot)) scoreController.Score.AddScoreBasedOnItem(Items.pacdot);
                 else scoreController.Score.AddScoreBasedOnItem(Items.power);
 
-                Debug.Log(scoreController.Score.GetScore());
 
                 scoreController.UpdateUI();
 
