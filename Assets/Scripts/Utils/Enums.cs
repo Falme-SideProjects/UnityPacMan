@@ -14,3 +14,17 @@ public enum ElementType
     power,
     door
 }
+
+public enum Items
+{
+    pacdot = 10,
+    power = 50,
+    cherry = 100,
+    strawberry = 300,
+    orange = 500,
+    apple = 700,
+    melon = 1000,
+    galaxian = 2000,
+    bell = 3000,
+    key = 5000
+}

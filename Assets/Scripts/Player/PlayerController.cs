@@ -4,9 +4,13 @@ public class PlayerController : MonoBehaviour
 {
     private PlayerMovimentation playerMovimentation;
 
+    [SerializeField] private Vector2 initialPlayerPosition;
+
     private void Awake()
     {
         playerMovimentation = new PlayerMovimentation();
+
+        playerMovimentation.SetPosition(initialPlayerPosition);
     }
 
     void Update()

@@ -121,6 +121,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &317438161 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 931577042857214276, guid: e59e4edef809b9542babff59b0e52b40,
+    type: 3}
+  m_PrefabInstance: {fileID: 4223406478621300306}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,6 +282,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1206966983 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3435944982200110536, guid: e59e4edef809b9542babff59b0e52b40,
+    type: 3}
+  m_PrefabInstance: {fileID: 4223406478621300306}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1465322059 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3022569492047218914, guid: e59e4edef809b9542babff59b0e52b40,
+    type: 3}
+  m_PrefabInstance: {fileID: 4223406478621300306}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92c994f84e8a86b4299136b6a392f888, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4223406478621300306
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -277,6 +313,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3022569492047218914, guid: e59e4edef809b9542babff59b0e52b40,
+        type: 3}
+      propertyPath: playerOneScoreText
+      value: 
+      objectReference: {fileID: 1206966983}
+    - target: {fileID: 3022569492047218914, guid: e59e4edef809b9542babff59b0e52b40,
+        type: 3}
+      propertyPath: highScoreText
+      value: 
+      objectReference: {fileID: 317438161}
     - target: {fileID: 4223406478316925796, guid: e59e4edef809b9542babff59b0e52b40,
         type: 3}
       propertyPath: m_Name
@@ -401,6 +447,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game
       objectReference: {fileID: 0}
+    - target: {fileID: 5569443209799337131, guid: eadee8b4ad80daa42ae4e5f29cab0589,
+        type: 3}
+      propertyPath: scoreController
+      value: 
+      objectReference: {fileID: 1465322059}
     - target: {fileID: 7317740369107497203, guid: eadee8b4ad80daa42ae4e5f29cab0589,
         type: 3}
       propertyPath: m_LocalPosition.x

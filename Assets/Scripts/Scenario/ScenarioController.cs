@@ -17,6 +17,7 @@ public class ScenarioController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private ScoreController scoreController;
 
     [Header("Prefabs")]
     [SerializeField] private GameObject tile;
@@ -44,6 +45,11 @@ public class ScenarioController : MonoBehaviour
     void Update()
     {
         CheckPlayerMovimentBasedOnLocal();
+
+        if(Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            ResetScenario();
+        }
     }
 
 
@@ -75,6 +81,22 @@ public class ScenarioController : MonoBehaviour
                         tileObject.GetComponent<SpriteRenderer>().color = Color.green;
                         this.scenarioGrid[h][w].elementCollectable = true;
                         break;
+                }
+            }
+        }
+    }
+
+    private void ResetScenario()
+    {
+        for (int h = 0; h < this.scenarioGrid.Count; h++)
+        {
+            for (int w = 0; w < this.scenarioGrid[h].Count; w++)
+            {
+                if(this.scenarioGrid[h][w].elementChar.Equals(ElementType.pacdot) ||
+                    this.scenarioGrid[h][w].elementChar.Equals(ElementType.power))
+                {
+                    this.scenarioGrid[h][w].elementSpriteRenderer.enabled = true;
+                    this.scenarioGrid[h][w].elementCollectable = true;
                 }
             }
         }
@@ -136,6 +158,14 @@ public class ScenarioController : MonoBehaviour
                 scenarioGrid[_y][_x].elementCollectable = false;
                 scenarioGrid[_y][_x].elementSpriteRenderer.enabled = false;
                 pelletsTotal++;
+
+                if (scenarioGrid[_y][_x].elementChar.Equals(ElementType.pacdot)) scoreController.Score.AddScoreBasedOnItem(Items.pacdot);
+                else scoreController.Score.AddScoreBasedOnItem(Items.power);
+
+                Debug.Log(scoreController.Score.GetScore());
+
+                scoreController.UpdateUI();
+
                 CheckAllPacDotsCollected();
             }
         }
@@ -143,7 +173,7 @@ public class ScenarioController : MonoBehaviour
 
     private void CheckAllPacDotsCollected()
     {
-        if(pelletsTotal >= 246)
+        if(pelletsTotal >= 244)
         {
             #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
