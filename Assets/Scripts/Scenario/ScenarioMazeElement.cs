@@ -4,7 +4,7 @@ public class ScenarioMazeElement
 {
     public ElementType elementChar;
     public SpriteRenderer elementSpriteRenderer;
-    public bool elementCollectable;
+    public bool elementCollectable = false;
 
     public ScenarioMazeElement(ElementType _elementChar)
     {

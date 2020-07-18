@@ -8,6 +8,8 @@ public class ScenarioController : MonoBehaviour
     private List<List<ScenarioMazeElement>> scenarioGrid;
     private PlayerMovimentation playerMovimentation;
 
+    private int pelletsTotal = 0;
+
     [Header("Data")]
     [SerializeField] private float distance = 1f;
     [SerializeField] private int levelWidth, levelHeight;
@@ -67,9 +69,11 @@ public class ScenarioController : MonoBehaviour
                 {
                     case ElementType.pacdot:
                         this.scenarioGrid[h][w].elementSpriteRenderer.sprite = dotSprite;
+                        this.scenarioGrid[h][w].elementCollectable = true;
                         break;
                     case ElementType.power:
                         tileObject.GetComponent<SpriteRenderer>().color = Color.green;
+                        this.scenarioGrid[h][w].elementCollectable = true;
                         break;
                 }
             }
@@ -127,10 +131,25 @@ public class ScenarioController : MonoBehaviour
         if(scenarioGrid[_y][_x].elementChar.Equals(ElementType.pacdot) ||
             scenarioGrid[_y][_x].elementChar.Equals(ElementType.power))
         {
-            scenarioGrid[_y][_x].elementSpriteRenderer.enabled = false;
+            if(scenarioGrid[_y][_x].elementCollectable)
+            {
+                scenarioGrid[_y][_x].elementCollectable = false;
+                scenarioGrid[_y][_x].elementSpriteRenderer.enabled = false;
+                pelletsTotal++;
+                CheckAllPacDotsCollected();
+            }
         }
     }
 
+    private void CheckAllPacDotsCollected()
+    {
+        if(pelletsTotal >= 246)
+        {
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #endif
+        }
+    }
 
 
 
