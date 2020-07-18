@@ -93,6 +93,7 @@ public class ScenarioController : MonoBehaviour
                 ResetScenarioCell(this.scenarioGrid[h][w]);
 
         playerMovimentation.ResetPosition();
+        pelletsTotal = 0;
     }
 
     private void ResetScenarioCell(ScenarioMazeElement mazeElement)
@@ -177,9 +178,7 @@ public class ScenarioController : MonoBehaviour
     {
         if(pelletsTotal >= 244)
         {
-            #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-            #endif
+            ResetScenario();
         }
     }
 
