@@ -17,6 +17,7 @@ public class ScenarioController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private GhostController[] ghostController;
     [SerializeField] private ScoreController scoreController;
 
     [Header("Prefabs")]
@@ -45,8 +46,9 @@ public class ScenarioController : MonoBehaviour
     void Update()
     {
         CheckPlayerMovimentBasedOnLocal();
+        CheckGhostsMovimentBasedOnLocal();
 
-        if(Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             ResetScenario();
         }
@@ -106,6 +108,24 @@ public class ScenarioController : MonoBehaviour
         }
     }
 
+    private void CheckGhostsMovimentBasedOnLocal()
+    {
+        float levelPositionX = scenarioMap.GetCenteredTilePositionByIndex(levelWidth, 0, distance);
+        float levelPositionY = scenarioMap.GetCenteredTilePositionByIndex(levelHeight, 0, distance);
+
+       for(int a=0; a< ghostController.Length; a++)
+       {
+            GhostMovimentation ghostMovimentation = ghostController[a].GetGhostMovimentation();
+
+            Vector2 PositionGrid =
+                ghostMovimentation.GetPositionInGrid(new Vector2(levelPositionX, -levelPositionY),
+                                                  new Vector2(-levelPositionX, levelPositionY),
+                                                  new Vector2(levelWidth, levelHeight));
+
+            ChangeMovementPermissionBasedOnLocal(PositionGrid, ghostMovimentation);
+       }
+    }
+
     private void CheckPlayerMovimentBasedOnLocal()
     {
         float levelPositionX = scenarioMap.GetCenteredTilePositionByIndex(levelWidth, 0, distance);
@@ -117,16 +137,16 @@ public class ScenarioController : MonoBehaviour
                                               new Vector2(-levelPositionX, levelPositionY),
                                               new Vector2(levelWidth, levelHeight));
 
-        ChangeMovementPermissionBasedOnLocal(playerPositionGrid);
+        ChangeMovementPermissionBasedOnLocal(playerPositionGrid, playerMovimentation);
         CheckCollectedPacDot(playerPositionGrid);
     }
 
-    private void ChangeMovementPermissionBasedOnLocal(Vector2 characterPosition)
+    private void ChangeMovementPermissionBasedOnLocal(Vector2 characterPosition, CharacterMovimentation characterMovimentation)
     {
         int _x = (int)characterPosition.x;
         int _y = (int)characterPosition.y;
 
-        MovementPermission _movementPermission = playerMovimentation.GetMovementPermission();
+        MovementPermission _movementPermission = characterMovimentation.GetMovementPermission();
 
         _movementPermission.SetMovePermission(true, true, true, true);
 

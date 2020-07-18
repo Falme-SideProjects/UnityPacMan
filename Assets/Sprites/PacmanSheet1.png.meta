@@ -14,6 +14,30 @@ TextureImporter:
   - first:
       213: 86815202987383470
     second: PacmanSheet1_3
+  - first:
+      213: 290669793346608965
+    second: PacmanSheet1_0
+  - first:
+      213: -646809613528354536
+    second: PacmanSheet1_1
+  - first:
+      213: -2088326777430477633
+    second: PacmanSheet1_2
+  - first:
+      213: -1962459562747465042
+    second: PacmanSheet1_3
+  - first:
+      213: 5596933701515502365
+    second: PacmanSheet1_4
+  - first:
+      213: 4243859876787078965
+    second: PacmanSheet1_5
+  - first:
+      213: 6385172930869438747
+    second: PacmanSheet1_6
+  - first:
+      213: -7182899491764339513
+    second: PacmanSheet1_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -137,8 +161,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 29ebd2a1fdb5586e0800000000000000
-      internalID: -1835960259308568942
+      spriteID: 54f5c5313aaa80400800000000000000
+      internalID: 290669793346608965
       vertices: []
       indices: 
       edges: []
@@ -158,14 +182,56 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 29d59d9ea0776c100800000000000000
-      internalID: 127920528183352722
+      spriteID: 811b55c55121607f0800000000000000
+      internalID: -646809613528354536
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
       name: PacmanSheet1_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb4f1504cd5c403e0800000000000000
+      internalID: -2088326777430477633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PacmanSheet1_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea27e5cdc61f3c4e0800000000000000
+      internalID: -1962459562747465042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PacmanSheet1_4
       rect:
         serializedVersion: 2
         x: 0
@@ -179,14 +245,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bc73338eb3d8752f0800000000000000
-      internalID: -984162705118906421
+      spriteID: d136e363c8d4cad40800000000000000
+      internalID: 5596933701515502365
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PacmanSheet1_3
+      name: PacmanSheet1_5
       rect:
         serializedVersion: 2
         x: 16
@@ -200,8 +266,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eaa9a2797fd643100800000000000000
-      internalID: 86815202987383470
+      spriteID: 5374d60b21835ea30800000000000000
+      internalID: 4243859876787078965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PacmanSheet1_6
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b19a9e553f0bc9850800000000000000
+      internalID: 6385172930869438747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PacmanSheet1_7
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cc7d0808f6315c90800000000000000
+      internalID: -7182899491764339513
       vertices: []
       indices: 
       edges: []

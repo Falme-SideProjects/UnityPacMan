@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.UpArrow)) playerMovimentation.Move(Direction.up, Time.deltaTime);
         else if (Input.GetKey(KeyCode.DownArrow)) playerMovimentation.Move(Direction.down, Time.deltaTime);
-        if (Input.GetKey(KeyCode.LeftArrow)) playerMovimentation.Move(Direction.left, Time.deltaTime);
+        else if (Input.GetKey(KeyCode.LeftArrow)) playerMovimentation.Move(Direction.left, Time.deltaTime);
         else if (Input.GetKey(KeyCode.RightArrow)) playerMovimentation.Move(Direction.right, Time.deltaTime);
     }
 
