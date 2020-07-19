@@ -2,53 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GhostController : MonoBehaviour
+public class GhostController : CharacterController
 {
-    private GhostMovimentation ghostMovimentation;
-
     private void Awake()
     {
-        ghostMovimentation = new GhostMovimentation();
-
-        ghostMovimentation.SetInitialPosition(transform.position);
-        ghostMovimentation.ResetPosition();
+        Initialize(new GhostMovimentation(screenData));
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         CheckNextPosition();
-        RefreshGhost();
+        RefreshCharacter();
     }
 
     private void CheckNextPosition()
     {
+        GhostMovimentation ghostMovimentation = (GhostMovimentation)characterMovimentation;
 
         bool CanMoveAtDefinedDirection =
-            ghostMovimentation.GetMovementPermission().CanMoveAt(ghostMovimentation.GetCurrentDirection());
+            characterMovimentation.GetMovementPermission().CanMoveAt(ghostMovimentation.GetCurrentDirection());
 
         if (CanMoveAtDefinedDirection)
         {
-            ghostMovimentation.Move(ghostMovimentation.GetCurrentDirection(), Time.deltaTime);
+            characterMovimentation.Move(ghostMovimentation.GetCurrentDirection(), Time.deltaTime);
         }else
         {
 
             bool _movedRandomly = MoveRandomPosition();
             if (!_movedRandomly)
             {
-                if (ghostMovimentation.GetMovementPermission().CanMoveAt(Direction.up))
+                if (characterMovimentation.GetMovementPermission().CanMoveAt(Direction.up))
                     ghostMovimentation.SetCurrentDirection(Direction.up);
-                else if (ghostMovimentation.GetMovementPermission().CanMoveAt(Direction.left))
+                else if (characterMovimentation.GetMovementPermission().CanMoveAt(Direction.left))
                     ghostMovimentation.SetCurrentDirection(Direction.left);
-                else if (ghostMovimentation.GetMovementPermission().CanMoveAt(Direction.down))
+                else if (characterMovimentation.GetMovementPermission().CanMoveAt(Direction.down))
                     ghostMovimentation.SetCurrentDirection(Direction.down);
-                else if (ghostMovimentation.GetMovementPermission().CanMoveAt(Direction.right))
+                else if (characterMovimentation.GetMovementPermission().CanMoveAt(Direction.right))
                     ghostMovimentation.SetCurrentDirection(Direction.right);
             }
         }
@@ -57,29 +46,17 @@ public class GhostController : MonoBehaviour
 
     private bool MoveRandomPosition()
     {
+        GhostMovimentation ghostMovimentation = (GhostMovimentation)characterMovimentation;
+
         Direction _randomDirection = (Direction)Random.Range(0, 4);
 
-        if(ghostMovimentation.GetMovementPermission().CanMoveAt(_randomDirection))
-        {
+        bool canGoToDirection = characterMovimentation.GetMovementPermission().CanMoveAt(_randomDirection);
+
+        if (canGoToDirection)
             ghostMovimentation.SetCurrentDirection(_randomDirection);
-            return true;
-        } else
-        {
-            return false;
-        }
-
+        
+        return canGoToDirection;
     }
 
-    private void RefreshGhost()
-    {
-        this.transform.position =
-            new Vector3(ghostMovimentation.GetPosition().x,
-                        ghostMovimentation.GetPosition().y,
-                        transform.position.z);
-    }
 
-    public GhostMovimentation GetGhostMovimentation()
-    {
-        return this.ghostMovimentation;
-    }
 }

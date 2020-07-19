@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CharacterMovimentation
 {
@@ -10,10 +8,10 @@ public class CharacterMovimentation
     private Vector2 initialPosition;
     private Vector2 screenLimit;
 
-    public CharacterMovimentation()
+    public CharacterMovimentation(ScreenDataScriptableObject screenData=null)
     {
         movementPermission = new MovementPermission();
-        screenLimit = new Vector2(4f, 10f);
+        if (screenData != null) screenLimit = screenData.screenLimit;
     }
 
     public MovementPermission GetMovementPermission()
@@ -68,7 +66,6 @@ public class CharacterMovimentation
         }
 
         CheckWarp(screenLimit);
-        //Debug.Log(GetPositionInGrid(new Vector2(-3.618f,4.02f), new Vector2(3.618f, -4.02f), new Vector2(28,31)));
     }
 
     public void CheckWarp(Vector2 limit)
@@ -100,13 +97,12 @@ public class CharacterMovimentation
     public int GetPositionBetweenTwoNumbers(int arrayLength, float distance, float compareNumber)
     {
         float numberGap = distance / (arrayLength - 1);
-        float currentPosition = 0f;
         float minimum = float.MaxValue;
         int index = -1;
 
         for (int a = 0; a < arrayLength; a++)
         {
-            currentPosition = numberGap * a;
+            float currentPosition = numberGap * a;
             if (Mathf.Abs(currentPosition - compareNumber) < minimum)
             {
                 minimum = Mathf.Abs(currentPosition - compareNumber);

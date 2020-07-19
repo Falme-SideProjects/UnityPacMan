@@ -94,4 +94,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c3515f38c5d8f4a908f2ac77789711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenData: {fileID: 11400000, guid: 66254da2ce7c25d44abd82ba9ec82cec, type: 2}
   initialPlayerPosition: {x: 0, y: -2.14}

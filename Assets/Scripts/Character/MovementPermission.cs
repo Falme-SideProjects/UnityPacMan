@@ -1,6 +1,4 @@
-﻿using System;
-
-public class MovementPermission
+﻿public class MovementPermission
 {
     private bool up = true, 
                 left = true, 

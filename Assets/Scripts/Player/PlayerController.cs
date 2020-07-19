@@ -1,43 +1,26 @@
 ﻿using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : CharacterController
 {
-    private PlayerMovimentation playerMovimentation;
-
     [SerializeField] private Vector2 initialPlayerPosition;
 
     private void Awake()
     {
-        playerMovimentation = new PlayerMovimentation();
-
-        playerMovimentation.SetInitialPosition(initialPlayerPosition);
-        playerMovimentation.ResetPosition();
+        Initialize(new PlayerMovimentation(screenData));
     }
 
     void Update()
     {
         CheckInput();
-        RefreshPlayer();
+        RefreshCharacter();
     }
 
     private void CheckInput()
     {
-        if (Input.GetKey(KeyCode.UpArrow)) playerMovimentation.Move(Direction.up, Time.deltaTime);
-        else if (Input.GetKey(KeyCode.DownArrow)) playerMovimentation.Move(Direction.down, Time.deltaTime);
-        else if (Input.GetKey(KeyCode.LeftArrow)) playerMovimentation.Move(Direction.left, Time.deltaTime);
-        else if (Input.GetKey(KeyCode.RightArrow)) playerMovimentation.Move(Direction.right, Time.deltaTime);
+        if (Input.GetKey(KeyCode.UpArrow)) characterMovimentation.Move(Direction.up, Time.deltaTime);
+        else if (Input.GetKey(KeyCode.DownArrow)) characterMovimentation.Move(Direction.down, Time.deltaTime);
+        else if (Input.GetKey(KeyCode.LeftArrow)) characterMovimentation.Move(Direction.left, Time.deltaTime);
+        else if (Input.GetKey(KeyCode.RightArrow)) characterMovimentation.Move(Direction.right, Time.deltaTime);
     }
 
-    private void RefreshPlayer()
-    {
-        this.transform.position = 
-            new Vector3(playerMovimentation.GetPosition().x,
-                        playerMovimentation.GetPosition().y,
-                        transform.position.z);
-    }
-
-    public PlayerMovimentation GetPlayerMovimentation()
-    {
-        return this.playerMovimentation;
-    }
 }

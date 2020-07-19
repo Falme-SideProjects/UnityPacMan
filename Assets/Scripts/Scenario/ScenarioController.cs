@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Rendering;
 
 public class ScenarioController : MonoBehaviour
 {
@@ -8,45 +7,30 @@ public class ScenarioController : MonoBehaviour
     private List<List<ScenarioMazeElement>> scenarioGrid;
     private PlayerMovimentation playerMovimentation;
 
-    private int pelletsTotal = 0;
+    private int pelletsCollected = 0;
 
     [Header("Data")]
-    [SerializeField] private float distance = 1f;
-    [SerializeField] private int levelWidth, levelHeight;
-    [SerializeField] private TextAsset mapText;
+    [SerializeField] private ScenarioDataScriptableObject scenarioData;
 
     [Header("References")]
     [SerializeField] private PlayerController playerController;
     [SerializeField] private GhostController[] ghostController;
     [SerializeField] private ScoreController scoreController;
 
-    [Header("Prefabs")]
-    [SerializeField] private GameObject tile;
-
-    [Header("Sprites")]
-    [SerializeField] private Sprite dotSprite;
-
     private void Awake()
     {
-        scenarioMap = new ScenarioMap();
-
-        string inlineMap = System.Text.RegularExpressions.Regex.Replace(mapText.text, @"\t|\n|\r", "");
-
-        scenarioMap.SetScenarioString(inlineMap);
+        InitializeMap();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        playerMovimentation = playerController.GetPlayerMovimentation();
+        playerMovimentation = (PlayerMovimentation)playerController.GetCharacterMovimentation();
         SpawnScenario();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        CheckPlayerMovimentBasedOnLocal();
-        CheckGhostsMovimentBasedOnLocal();
+        CheckCharactersMovimentBasedOnLocal();
 
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
@@ -54,38 +38,52 @@ public class ScenarioController : MonoBehaviour
         }
     }
 
+    private void InitializeMap()
+    {
+        scenarioMap = new ScenarioMap();
+        string inlineMap = System.Text.RegularExpressions.Regex.Replace(scenarioData.mapText.text, @"\t|\n|\r", "");
+        scenarioMap.SetScenarioString(inlineMap);
+    }
 
     //!!!
     private void SpawnScenario()
     {
-        this.scenarioGrid = scenarioMap.GetScenarioGrid(levelWidth, levelHeight);
+        this.scenarioGrid = scenarioMap.GetScenarioGrid(scenarioData.levelWidth, scenarioData.levelHeight);
 
         for(int h=0; h< this.scenarioGrid.Count; h++)
-        {
             for (int w = 0; w < this.scenarioGrid[h].Count; w++)
-            {
-                if (this.scenarioGrid[h][w].elementType.Equals(ElementType.empty)) continue;
+                CreateElementsInScenario(w, h);
+    }
 
-                Vector3 _tilePosition = Vector3.right * scenarioMap.GetCenteredTilePositionByIndex(levelWidth, w, distance);
-                _tilePosition += Vector3.down * scenarioMap.GetCenteredTilePositionByIndex(levelHeight, h, distance);
+    private void CreateElementsInScenario(int x, int y)
+    {
+        ScenarioMazeElement _scenarioMazeElement = this.scenarioGrid[y][x];
 
-                GameObject tileObject = Instantiate(tile, _tilePosition, Quaternion.identity, transform);
+        if (_scenarioMazeElement.elementType.Equals(ElementType.empty)) return;
 
-                this.scenarioGrid[h][w].elementSpriteRenderer = tileObject.GetComponent<SpriteRenderer>();
+        GameObject tileObject = Instantiate(scenarioData.tile, GetInstatiateTilePosition(x, y), Quaternion.identity, transform);
 
-                switch(this.scenarioGrid[h][w].elementType)
-                {
-                    case ElementType.pacdot:
-                        this.scenarioGrid[h][w].elementSpriteRenderer.sprite = dotSprite;
-                        this.scenarioGrid[h][w].elementCollectable = true;
-                        break;
-                    case ElementType.power:
-                        tileObject.GetComponent<SpriteRenderer>().color = Color.green;
-                        this.scenarioGrid[h][w].elementCollectable = true;
-                        break;
-                }
-            }
+        _scenarioMazeElement.elementSpriteRenderer = tileObject.GetComponent<SpriteRenderer>();
+
+        switch (_scenarioMazeElement.elementType)
+        {
+            case ElementType.pacdot:
+                _scenarioMazeElement.elementSpriteRenderer.sprite = scenarioData.dotSprite;
+                _scenarioMazeElement.elementCollectable = true;
+                break;
+            case ElementType.power:
+                tileObject.GetComponent<SpriteRenderer>().color = Color.green;
+                _scenarioMazeElement.elementCollectable = true;
+                break;
         }
+    }
+
+    private Vector3 GetInstatiateTilePosition(int x, int y)
+    {
+        Vector3 _tilePosition = Vector3.right * scenarioMap.GetCenteredTilePositionByIndex(scenarioData.levelWidth, x, scenarioData.distanceBetweenTiles);
+        _tilePosition += Vector3.down * scenarioMap.GetCenteredTilePositionByIndex(scenarioData.levelHeight, y, scenarioData.distanceBetweenTiles);
+
+        return _tilePosition;
     }
 
     private void ResetScenario()
@@ -95,7 +93,7 @@ public class ScenarioController : MonoBehaviour
                 ResetScenarioCell(this.scenarioGrid[h][w]);
 
         playerMovimentation.ResetPosition();
-        pelletsTotal = 0;
+        pelletsCollected = 0;
     }
 
     private void ResetScenarioCell(ScenarioMazeElement mazeElement)
@@ -108,37 +106,39 @@ public class ScenarioController : MonoBehaviour
         }
     }
 
-    private void CheckGhostsMovimentBasedOnLocal()
+    private Vector2 GetLevelPosition()
     {
-        float levelPositionX = scenarioMap.GetCenteredTilePositionByIndex(levelWidth, 0, distance);
-        float levelPositionY = scenarioMap.GetCenteredTilePositionByIndex(levelHeight, 0, distance);
+        float levelPositionX = scenarioMap.GetCenteredTilePositionByIndex(scenarioData.levelWidth, 0, scenarioData.distanceBetweenTiles);
+        float levelPositionY = scenarioMap.GetCenteredTilePositionByIndex(scenarioData.levelHeight, 0, scenarioData.distanceBetweenTiles);
 
-       for(int a=0; a< ghostController.Length; a++)
-       {
-            GhostMovimentation ghostMovimentation = ghostController[a].GetGhostMovimentation();
-
-            Vector2 PositionGrid =
-                ghostMovimentation.GetPositionInGrid(new Vector2(levelPositionX, -levelPositionY),
-                                                  new Vector2(-levelPositionX, levelPositionY),
-                                                  new Vector2(levelWidth, levelHeight));
-
-            ChangeMovementPermissionBasedOnLocal(PositionGrid, ghostMovimentation);
-       }
+        return new Vector2(levelPositionX, levelPositionY);
     }
 
-    private void CheckPlayerMovimentBasedOnLocal()
+    private void CheckCharactersMovimentBasedOnLocal()
     {
-        float levelPositionX = scenarioMap.GetCenteredTilePositionByIndex(levelWidth, 0, distance);
-        float levelPositionY = scenarioMap.GetCenteredTilePositionByIndex(levelHeight, 0, distance);
+        Vector2 _levelPosition = GetLevelPosition();
 
-       
-        Vector2 playerPositionGrid =
-            playerMovimentation.GetPositionInGrid(new Vector2(levelPositionX, -levelPositionY),
-                                              new Vector2(-levelPositionX, levelPositionY),
-                                              new Vector2(levelWidth, levelHeight));
+        for (int a = 0; a < ghostController.Length; a++)
+        {
+            GhostMovimentation ghostMovimentation = (GhostMovimentation)ghostController[a].GetCharacterMovimentation();
+            CheckPlayerPermission(_levelPosition, ghostMovimentation);
+        }
 
-        ChangeMovementPermissionBasedOnLocal(playerPositionGrid, playerMovimentation);
-        CheckCollectedPacDot(playerPositionGrid);
+        CheckPlayerPermission(_levelPosition, playerMovimentation);
+    }
+
+    private void CheckPlayerPermission(Vector2 _levelPosition, CharacterMovimentation characterMovimentation)
+    {
+
+        Vector2 characterPositionGrid =
+            characterMovimentation.GetPositionInGrid(new Vector2(_levelPosition.x, -_levelPosition.y),
+                                              new Vector2(-_levelPosition.x, _levelPosition.y),
+                                              new Vector2(scenarioData.levelWidth, scenarioData.levelHeight));
+
+        ChangeMovementPermissionBasedOnLocal(characterPositionGrid, characterMovimentation);
+        
+        if(characterMovimentation is PlayerMovimentation)
+            CheckCollectedPacDot(characterPositionGrid);
     }
 
     private void ChangeMovementPermissionBasedOnLocal(Vector2 characterPosition, CharacterMovimentation characterMovimentation)
@@ -154,7 +154,7 @@ public class ScenarioController : MonoBehaviour
             _movementPermission.
                 SetOneMovePermission(Direction.up, !scenarioGrid[_y - 1][_x].elementType.Equals(ElementType.wall));
 
-        if (_y != levelHeight-1)
+        if (_y != scenarioData.levelHeight -1)
             _movementPermission.
                 SetOneMovePermission(Direction.down, !scenarioGrid[_y + 1][_x].elementType.Equals(ElementType.wall));
 
@@ -162,7 +162,7 @@ public class ScenarioController : MonoBehaviour
             _movementPermission.
                 SetOneMovePermission(Direction.left, !scenarioGrid[_y][_x-1].elementType.Equals(ElementType.wall));
 
-        if (_x != levelWidth - 1)
+        if (_x != scenarioData.levelWidth - 1)
             _movementPermission.
                 SetOneMovePermission(Direction.right, !scenarioGrid[_y][_x+1].elementType.Equals(ElementType.wall));
 
@@ -181,7 +181,7 @@ public class ScenarioController : MonoBehaviour
             {
                 scenarioGrid[_y][_x].elementCollectable = false;
                 scenarioGrid[_y][_x].elementSpriteRenderer.enabled = false;
-                pelletsTotal++;
+                pelletsCollected++;
 
                 if (scenarioGrid[_y][_x].elementType.Equals(ElementType.pacdot)) scoreController.Score.AddScoreBasedOnItem(Items.pacdot);
                 else scoreController.Score.AddScoreBasedOnItem(Items.power);
@@ -196,7 +196,7 @@ public class ScenarioController : MonoBehaviour
 
     private void CheckAllPacDotsCollected()
     {
-        if(pelletsTotal >= 244)
+        if(pelletsCollected >= scenarioData.totalPelletsToCollect)
         {
             ResetScenario();
         }

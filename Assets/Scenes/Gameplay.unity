@@ -442,16 +442,40 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 711612908110394871, guid: eadee8b4ad80daa42ae4e5f29cab0589,
+        type: 3}
+      propertyPath: screenOData
+      value: 
+      objectReference: {fileID: 11400000, guid: 66254da2ce7c25d44abd82ba9ec82cec,
+        type: 2}
     - target: {fileID: 2244977797888876820, guid: eadee8b4ad80daa42ae4e5f29cab0589,
         type: 3}
       propertyPath: m_Name
       value: Game
       objectReference: {fileID: 0}
+    - target: {fileID: 4795003097657214585, guid: eadee8b4ad80daa42ae4e5f29cab0589,
+        type: 3}
+      propertyPath: screenOData
+      value: 
+      objectReference: {fileID: 11400000, guid: 66254da2ce7c25d44abd82ba9ec82cec,
+        type: 2}
     - target: {fileID: 5569443209799337131, guid: eadee8b4ad80daa42ae4e5f29cab0589,
         type: 3}
       propertyPath: scoreController
       value: 
       objectReference: {fileID: 1465322059}
+    - target: {fileID: 6061785804792836697, guid: eadee8b4ad80daa42ae4e5f29cab0589,
+        type: 3}
+      propertyPath: screenOData
+      value: 
+      objectReference: {fileID: 11400000, guid: 66254da2ce7c25d44abd82ba9ec82cec,
+        type: 2}
+    - target: {fileID: 6297585824374551065, guid: eadee8b4ad80daa42ae4e5f29cab0589,
+        type: 3}
+      propertyPath: screenOData
+      value: 
+      objectReference: {fileID: 11400000, guid: 66254da2ce7c25d44abd82ba9ec82cec,
+        type: 2}
     - target: {fileID: 7317740369107497203, guid: eadee8b4ad80daa42ae4e5f29cab0589,
         type: 3}
       propertyPath: m_LocalPosition.x

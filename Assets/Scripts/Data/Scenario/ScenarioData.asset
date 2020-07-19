@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 279dd14f3c8f64640a1f1996fe4aeab1, type: 3}
+  m_Name: ScenarioData
+  m_EditorClassIdentifier: 
+  distanceBetweenTiles: 0.268
+  levelWidth: 28
+  levelHeight: 31
+  totalPelletsToCollect: 244
+  mapText: {fileID: 4900000, guid: 25b517265473ffc4381d7ba44b302690, type: 3}
+  tile: {fileID: 7034929804800192837, guid: 64e8a3e0cf79d4a4c901c79c1184bb15, type: 3}
+  dotSprite: {fileID: 4243859876787078965, guid: bc1f6d9ae65ec00408a91f7a2f7c9b62,
+    type: 3}
