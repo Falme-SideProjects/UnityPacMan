@@ -28,3 +28,19 @@ public enum Items
     bell = 3000,
     key = 5000
 }
+
+public enum GhostState
+{
+    chase,
+    scatter,
+    frightened,
+    eaten
+}
+
+public enum GhostType
+{
+    blinky,
+    pinky,
+    inky,
+    clyde
+}

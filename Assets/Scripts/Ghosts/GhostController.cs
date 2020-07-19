@@ -4,15 +4,32 @@ using UnityEngine;
 
 public class GhostController : CharacterController
 {
+    [SerializeField] private GhostAI ghostAI;
+
     private void Awake()
     {
+        ghostAI = new GhostAI();
         Initialize(new GhostMovimentation(screenData));
     }
 
     void Update()
     {
         CheckNextPosition();
+        CheckNearestPosition();
         RefreshCharacter();
+    }
+
+    private void CheckNearestPosition()
+    {
+        int _limitY = ghostAI.GetScenarioGrid().Count;
+        int _limitX = ghostAI.GetScenarioGrid()[_limitY-1].Count;
+
+        Vector2 startPosition = ghostAI.GetScenarioGrid()[0][0].elementPositionInWorld;
+        Vector2 endPosition = ghostAI.GetScenarioGrid()[_limitY-1][_limitX-1].elementPositionInWorld;
+
+        Debug.Log(characterMovimentation.GetPositionInGrid(startPosition, endPosition, new Vector2(_limitX, _limitY)));
+
+
     }
 
     private void CheckNextPosition()
@@ -56,6 +73,11 @@ public class GhostController : CharacterController
             ghostMovimentation.SetCurrentDirection(_randomDirection);
         
         return canGoToDirection;
+    }
+
+    public GhostAI GetGhostAI()
+    {
+        return this.ghostAI;
     }
 
 

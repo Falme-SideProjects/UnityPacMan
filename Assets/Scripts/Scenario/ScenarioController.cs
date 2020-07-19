@@ -45,7 +45,6 @@ public class ScenarioController : MonoBehaviour
         scenarioMap.SetScenarioString(inlineMap);
     }
 
-    //!!!
     private void SpawnScenario()
     {
         this.scenarioGrid = scenarioMap.GetScenarioGrid(scenarioData.levelWidth, scenarioData.levelHeight);
@@ -58,6 +57,7 @@ public class ScenarioController : MonoBehaviour
     private void CreateElementsInScenario(int x, int y)
     {
         ScenarioMazeElement _scenarioMazeElement = this.scenarioGrid[y][x];
+        _scenarioMazeElement.elementPositionInWorld = GetInstatiateTilePosition(x, y);
 
         if (_scenarioMazeElement.elementType.Equals(ElementType.empty)) return;
 
@@ -121,6 +121,7 @@ public class ScenarioController : MonoBehaviour
         for (int a = 0; a < ghostController.Length; a++)
         {
             GhostMovimentation ghostMovimentation = (GhostMovimentation)ghostController[a].GetCharacterMovimentation();
+            ghostController[a].GetGhostAI().SetScenarioGrid(this.scenarioGrid);
             CheckPlayerPermission(_levelPosition, ghostMovimentation);
         }
 
