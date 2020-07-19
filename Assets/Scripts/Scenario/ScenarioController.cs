@@ -26,17 +26,29 @@ public class ScenarioController : MonoBehaviour
     {
         playerMovimentation = (PlayerMovimentation)playerController.GetCharacterMovimentation();
         SpawnScenario();
+        InitializeGhostController();
     }
 
     void Update()
     {
         CheckCharactersMovimentBasedOnLocal();
 
+
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             ResetScenario();
         }
     }
+
+    private void InitializeGhostController()
+    {
+        for (int a = 0; a < ghostController.Length; a++)
+        {
+            ghostController[a].GetGhostAI().SetScenarioGrid(this.scenarioGrid);
+            ghostController[a].InitializeGhost();
+        }
+    }
+
 
     private void InitializeMap()
     {
@@ -121,7 +133,7 @@ public class ScenarioController : MonoBehaviour
         for (int a = 0; a < ghostController.Length; a++)
         {
             GhostMovimentation ghostMovimentation = (GhostMovimentation)ghostController[a].GetCharacterMovimentation();
-            ghostController[a].GetGhostAI().SetScenarioGrid(this.scenarioGrid);
+            
             CheckPlayerPermission(_levelPosition, ghostMovimentation);
         }
 

@@ -30,6 +30,8 @@ public class ScenarioMap
                     continue;
                 }
                 _map[h].Add(new ScenarioMazeElement((ElementType)(int.Parse(_scenarioString[index].ToString()))));
+
+                _map[h][w].elementPositionInWorld = new UnityEngine.Vector2(w,h);
             }
         }
 

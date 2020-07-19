@@ -108,6 +108,181 @@ namespace Tests
             Assert.AreEqual(new Vector2(_expectedX, _expectedY), _actual);
         }
 
+        [Test]
+        [TestCase(0,0,0,0, 0f)]
+        [TestCase(0, 0, 1, 0, 1f)]
+        [TestCase(0, 0, 0, 1, 1f)]
+        [TestCase(0, 0, 1, 1, 1.4142f)]
+        public void GetDistanceBetweenTiles_SetGridWithPositions_ReturnsDistance(int _originX,
+                                                                                 int _originY,
+                                                                                 int _destinyX,
+                                                                                 int _destinyY,
+                                                                                 float _expected)
+        {
+            List<List<ScenarioMazeElement>> dummyGrid = CreateDummyGrid();
+
+            ghostAI.SetScenarioGrid(dummyGrid);
+
+            float _actual = ghostAI.GetDistanceBetweenTiles(new Vector2(_originX, _originY), new Vector2(_destinyX, _destinyY));
+
+            Assert.AreEqual(_expected, _actual, 0.01f);
+
+        }
+
+        [Test]
+        [TestCase(0, 0, 0f)]
+        [TestCase(1, 0, 1f)]
+        [TestCase(0, 1, 1f)]
+        [TestCase(1, 1, 1.4142f)]
+        public void GetDistanceBetweenTileToTarget_SetGridWithPositions_ReturnsDistance(int _originX,
+                                                                                 int _originY,
+                                                                                 float _expected)
+        {
+            List<List<ScenarioMazeElement>> dummyGrid = CreateDummyGrid();
+
+            ghostAI.SetScenarioGrid(dummyGrid);
+            ghostAI.SetGhostType(GhostType.pinky);
+            ghostAI.SetGhostCurrentState(GhostState.scatter);
+
+            float _actual = ghostAI.GetDistanceBetweenTileToTarget(new Vector2(_originX, _originY));
+
+            Assert.AreEqual(_expected, _actual, 0.01f);
+        }
+
+        [Test]
+        [TestCase(1,1, Direction.up, GhostState.scatter, 1)]
+        [TestCase(6, 1, Direction.right, GhostState.scatter, 2)]
+        [TestCase(6, 5, Direction.down, GhostState.scatter, 3)]
+        public void GetPermittedDirections_SetGridWithPositions_ReturnArrayDirections(int _posX,
+                                                                                      int _posY,
+                                                                                      Direction _currentDirection,
+                                                                                      GhostState _ghostState,
+                                                                                      int _expectedLength)
+        {
+            List<List<ScenarioMazeElement>> dummyGrid = GetFacadeMap();
+
+            ghostAI.SetScenarioGrid(dummyGrid);
+
+            List<Direction> directions = ghostAI.GetPermittedDirections(new Vector2(_posX, _posY), _currentDirection);
+
+            Assert.AreEqual(_expectedLength, directions.Count);
+        }
+
+
+        [Test]
+        [TestCase(13, 11, Direction.up, GhostState.scatter, 2)]
+        [TestCase(13, 11, Direction.right, GhostState.scatter, 1)]
+        [TestCase(14, 11, Direction.left, GhostState.scatter, 1)]
+        [TestCase(14, 11, Direction.up, GhostState.scatter, 2)]
+        public void GetPermittedDirections_DoNotReturnToBox_ReturnArrayDirections(int _posX,
+                                                                                      int _posY,
+                                                                                      Direction _currentDirection,
+                                                                                      GhostState _ghostState,
+                                                                                      int _expectedLength)
+        {
+            List<List<ScenarioMazeElement>> dummyGrid = GetFacadeMap();
+
+            ghostAI.SetScenarioGrid(dummyGrid);
+
+            List<Direction> directions = ghostAI.GetPermittedDirections(new Vector2(_posX, _posY), _currentDirection);
+
+            Assert.AreEqual(_expectedLength, directions.Count);
+        }
+
+        [Test]
+        [TestCase(13, 11, false)]
+        [TestCase(13, 13, true)]
+        [TestCase(16, 15, true)]
+        [TestCase(11, 13, true)]
+        [TestCase(11, 12, true)]
+        public void IsGhostInBox_CheckGhostInBoxByPosition_ReturnBoolean(int _posX,
+                                                                         int _posY,
+                                                                         bool _expected)
+        {
+            List<List<ScenarioMazeElement>> dummyGrid = GetFacadeMap();
+
+            ghostAI.SetScenarioGrid(dummyGrid);
+
+            bool _actual = ghostAI.IsGhostInBox(new Vector2(_posX, _posY));
+
+            Assert.AreEqual(_expected, _actual);
+        }
+
+        [Test]
+        [TestCase(1, 2, GhostType.pinky, Direction.up, Direction.up)]
+        [TestCase(1, 1, GhostType.pinky, Direction.up, Direction.right)]
+        [TestCase(2, 1, GhostType.pinky, Direction.right, Direction.right)]
+        [TestCase(3, 1, GhostType.pinky, Direction.right, Direction.right)]
+        [TestCase(9, 11, GhostType.pinky, Direction.left, Direction.down)]
+        [TestCase(10, 11, GhostType.pinky, Direction.left, Direction.left)]
+        [TestCase(15, 15, GhostType.inky, Direction.right, Direction.right)]
+        [TestCase(16, 15, GhostType.inky, Direction.right, Direction.up)]
+        [TestCase(6, 1, GhostType.pinky, Direction.left, Direction.left)]
+        [TestCase(6, 1, GhostType.inky, Direction.left, Direction.down)]
+        public void GetNextNearestMove_FollowTargetScatter_ReturnDirection(int _posX,
+                                                                            int _posY,
+                                                                            GhostType _ghostType,
+                                                                            Direction _currentDirection,
+                                                                            Direction _expected)
+        {
+            List<List<ScenarioMazeElement>> dummyGrid = GetFacadeMap();
+
+            ghostAI.SetScenarioGrid(dummyGrid);
+            ghostAI.SetGhostType(_ghostType);
+            ghostAI.SetGhostCurrentState(GhostState.scatter);
+            ghostAI.SetCurrentTarget();
+
+            Direction _actual = ghostAI.GetNextNearestMove(new Vector2(_posX, _posY), _currentDirection);
+
+            Assert.AreEqual(_expected, _actual);
+        }
+
+        [Test]
+        [TestCase(14, 14, GhostType.inky, Direction.up, Direction.up)]
+        [TestCase(13, 14, GhostType.inky, Direction.left, Direction.up)]
+        [TestCase(13, 13, GhostType.inky, Direction.up, Direction.up)]
+        [TestCase(13, 12, GhostType.inky, Direction.up, Direction.up)]
+        public void GetNextNearestMove_GetOutOfBox_ReturnDirection(int _posX,
+                                                                            int _posY,
+                                                                            GhostType _ghostType,
+                                                                            Direction _currentDirection,
+                                                                            Direction _expected)
+        {
+            List<List<ScenarioMazeElement>> dummyGrid = GetFacadeMap();
+
+            ghostAI.SetGhostPosition(new Vector2(_posX, _posY));
+            ghostAI.SetScenarioGrid(dummyGrid);
+            ghostAI.SetGhostType(_ghostType);
+            ghostAI.SetGhostCurrentState(GhostState.scatter);
+            ghostAI.SetCurrentTarget();
+
+            Debug.Log(ghostAI.GetCurrentTarget());
+
+            Direction _actual = ghostAI.GetNextNearestMove(new Vector2(_posX, _posY), _currentDirection);
+
+            Assert.AreEqual(_expected, _actual);
+        }
+
+        [Test]
+        [TestCase(1, 2, Direction.up, 1, 1)]
+        [TestCase(1, 1, Direction.right, 2, 1)]
+        [TestCase(1, 1, Direction.left, 0, 1)]
+        [TestCase(1, 1, Direction.down, 1, 2)]
+        public void GetTilePositionBasedOnDirection_SettedDirectionAndGrid_ReturnVector2(int _posX,
+                                                                                         int _posY,
+                                                                                         Direction direction,
+                                                                                         float _expectedX,
+                                                                                         float _expectedY)
+        {
+            List<List<ScenarioMazeElement>> dummyGrid = CreateDummyGrid();
+
+            ghostAI.SetScenarioGrid(dummyGrid);
+
+            Vector2 _actual = ghostAI.GetTilePositionBasedOnDirection(new Vector2(_posX,_posY), direction);
+
+            Assert.AreEqual(new Vector2(_expectedX, _expectedY), _actual);
+        }
+
 
         /// --------------
         /// Local Functions
@@ -121,15 +296,25 @@ namespace Tests
             {
                 dummyGrid.Add(new List<ScenarioMazeElement>()
                 {
-                    new ScenarioMazeElement(ElementType.empty),
-                    new ScenarioMazeElement(ElementType.empty),
-                    new ScenarioMazeElement(ElementType.empty),
-                    new ScenarioMazeElement(ElementType.empty)
+                    new ScenarioMazeElement(ElementType.empty) { elementPositionInWorld = new Vector2(0, a) },
+                    new ScenarioMazeElement(ElementType.empty) { elementPositionInWorld = new Vector2(1, a) },
+                    new ScenarioMazeElement(ElementType.empty) { elementPositionInWorld = new Vector2(2, a) },
+                    new ScenarioMazeElement(ElementType.empty) { elementPositionInWorld = new Vector2(3, a) }
                 });
             }
 
             return dummyGrid;
         }
+
+        private List<List<ScenarioMazeElement>> GetFacadeMap()
+        {
+            ScenarioMap scenarioMap = new ScenarioMap();
+            TextAsset mapText = (TextAsset)UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Scripts/Data/LevelMap/Map.txt", typeof(TextAsset));
+            string inlineMap = System.Text.RegularExpressions.Regex.Replace(mapText.text, @"\t|\n|\r", "");
+            scenarioMap.SetScenarioString(inlineMap);
+            return scenarioMap.GetScenarioGrid(28, 31);
+        }
+
 
     }
 }
