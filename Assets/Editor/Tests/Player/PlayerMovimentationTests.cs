@@ -104,6 +104,8 @@ namespace Tests
         [TestCase(-10f, -10f, 30f, 40f, -10f, -10f, 3, 4, 0, 0)]
         [TestCase(-10f, -10f, 30f, 40f, 0f, -10f, 5, 6, 1, 0)]
         [TestCase(-10f, 10f, 30f, -40f, 10f, -10f, 5, 6, 2, 2)]
+        [TestCase(-10f, 10f, 30f, -40f, -20f, -10f, 5, 6, 0, 2)]
+        [TestCase(-10f, 10f, 30f, -40f, -200f, -10f, 5, 6, 0, 2)]
         public void GetPositionInGrid_GivenGameGrid_ReturnPlayerVector2GridPosition(float _initialGridX,
                                                                                     float _initialGridY,
                                                                                     float _endGridX,

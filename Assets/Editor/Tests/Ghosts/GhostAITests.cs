@@ -153,6 +153,12 @@ namespace Tests
         [TestCase(1,1, Direction.up, GhostState.scatter, 1)]
         [TestCase(6, 1, Direction.right, GhostState.scatter, 2)]
         [TestCase(6, 5, Direction.down, GhostState.scatter, 3)]
+        [TestCase(6, 5, Direction.down, GhostState.scatter, 3)]
+        [TestCase(0, 14, Direction.left, GhostState.scatter, 1)]
+        [TestCase(0, 14, Direction.left, GhostState.chase, 1)]
+        [TestCase(1, 14, Direction.right, GhostState.scatter, 1)]
+        [TestCase(26, 14, Direction.left, GhostState.chase, 1)]
+        [TestCase(27, 14, Direction.right, GhostState.chase, 1)]
         public void GetPermittedDirections_SetGridWithPositions_ReturnArrayDirections(int _posX,
                                                                                       int _posY,
                                                                                       Direction _currentDirection,
@@ -165,7 +171,32 @@ namespace Tests
 
             List<Direction> directions = ghostAI.GetPermittedDirections(new Vector2(_posX, _posY), _currentDirection);
 
+            for (int a = 0; a < directions.Count; a++) Debug.Log(directions[a].ToString());
+
             Assert.AreEqual(_expectedLength, directions.Count);
+        }
+
+        [Test]
+        [TestCase(1, 0, Direction.left, false)]
+        [TestCase(1, 0, Direction.right, false)]
+        [TestCase(1, 14, Direction.left, false)]
+        [TestCase(1, 14, Direction.right, false)]
+        [TestCase(0, 14, Direction.left, true)]
+        [TestCase(0, 14, Direction.right, false)]
+        [TestCase(27, 14, Direction.left, false)]
+        [TestCase(28, 14, Direction.right, false)]
+        public void IsOnEdge_WhenGhostInExtremeMiddleLeftRight_ReturnTrue(int _x,
+                                                                          int _y,
+                                                                          Direction _direction,
+                                                                          bool _expected)
+        {
+            List<List<ScenarioMazeElement>> dummyGrid = GetFacadeMap();
+
+            ghostAI.SetScenarioGrid(dummyGrid);
+
+            bool _actual = ghostAI.IsOnEdge(_x, _y, _direction);
+
+            Assert.AreEqual(_expected, _actual);
         }
 
 
@@ -282,6 +313,27 @@ namespace Tests
 
             Assert.AreEqual(new Vector2(_expectedX, _expectedY), _actual);
         }
+
+        [Test]
+        [TestCase(0, 14, Direction.left, 27, 14)]
+        [TestCase(27, 14, Direction.right, 0, 14)]
+        public void GetTilePositionBasedOnDirection_SettedDirectionAndFacadeGrid_ReturnVector2(int _posX,
+                                                                                         int _posY,
+                                                                                         Direction direction,
+                                                                                         float _expectedX,
+                                                                                         float _expectedY)
+        {
+            List<List<ScenarioMazeElement>> dummyGrid = GetFacadeMap();
+
+            ghostAI.SetScenarioGrid(dummyGrid);
+
+            Debug.Log(dummyGrid[0].Count - 1);
+
+            Vector2 _actual = ghostAI.GetTilePositionBasedOnDirection(new Vector2(_posX, _posY), direction);
+
+            Assert.AreEqual(new Vector2(_expectedX, _expectedY), _actual);
+        }
+
 
 
         /// --------------

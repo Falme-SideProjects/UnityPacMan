@@ -118,8 +118,6 @@ public class GhostAI
             Vector2 _pos = GetTilePositionBasedOnDirection(characterPosition, directionList[a]);
             float _dist = GetDistanceBetweenTileToTarget(_pos);
 
-            Debug.Log(directionList[a] + " : " + _dist);
-
             if(_dist < _minimumDistance)
             {
                 _minimumDistance = _dist;
@@ -132,6 +130,12 @@ public class GhostAI
 
     public Vector2 GetTilePositionBasedOnDirection(Vector2 characterPosition, Direction direction)
     {
+        if (IsOnEdge((int)characterPosition.x, (int)characterPosition.y, direction))
+        {
+            if (direction.Equals(Direction.right)) return this.scenarioGrid[(int)characterPosition.y][0].elementPositionInWorld;
+            else return this.scenarioGrid[(int)characterPosition.y][scenarioGrid[0].Count-1].elementPositionInWorld;
+        }
+
         switch(direction)
         {
 
@@ -164,13 +168,26 @@ public class GhostAI
             !GhostAtBoxDoor(characterPosition)) 
             directionList.Add(Direction.down);
 
-        if (!this.scenarioGrid[(int)characterPosition.y][(int)characterPosition.x - 1].elementType.Equals(ElementType.wall) &&
-            !currentDirection.Equals(Direction.right)) 
+        if(IsOnEdge((int)characterPosition.x, (int)characterPosition.y, Direction.left))
+        {
             directionList.Add(Direction.left);
+        } else
+        {
+            if (!this.scenarioGrid[(int)characterPosition.y][(int)characterPosition.x - 1].elementType.Equals(ElementType.wall) &&
+                !currentDirection.Equals(Direction.right)) 
+                directionList.Add(Direction.left);
+        }
 
-        if (!this.scenarioGrid[(int)characterPosition.y][(int)characterPosition.x+1].elementType.Equals(ElementType.wall) &&
-            !currentDirection.Equals(Direction.left)) 
+        if (IsOnEdge((int)characterPosition.x, (int)characterPosition.y, Direction.right))
+        {
             directionList.Add(Direction.right);
+        }
+        else
+        {
+            if (!this.scenarioGrid[(int)characterPosition.y][(int)characterPosition.x + 1].elementType.Equals(ElementType.wall) &&
+            !currentDirection.Equals(Direction.left))
+                directionList.Add(Direction.right);
+        }
 
         return directionList;
     }
@@ -187,6 +204,13 @@ public class GhostAI
         int _x = (int)characterPosition.x;
         int _y = (int)characterPosition.y;
         return (_x == 13 || _x == 14) && _y == 11;
+    }
+
+    public bool IsOnEdge(int _x, int _y, Direction currentDirection)
+    {
+        return (_y == 14 && _x == 0 && currentDirection.Equals(Direction.left)) ||
+                (_y == 14 && _x == (scenarioGrid[0].Count-1) && currentDirection.Equals(Direction.right));
+        return false;
     }
 
     public void SetPlayerMovimentation(PlayerMovimentation _playerMovimentation)

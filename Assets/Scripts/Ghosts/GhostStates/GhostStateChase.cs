@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,13 +11,28 @@ public class GhostStateChase : IGhostState
         {
             case GhostType.pinky:
 
+                Vector2 nextTarget = Vector2.zero;
+
                 switch(playerMovimentation.GetCurrentDirection())
                 {
-                    case Direction.up: return (playerMovimentation.GetCachedPosition()+(Vector2.up*4));
-                    case Direction.left: return (playerMovimentation.GetCachedPosition() + (Vector2.left * 4));
-                    case Direction.right: return (playerMovimentation.GetCachedPosition() + (Vector2.right * 4));
-                    case Direction.down: return (playerMovimentation.GetCachedPosition() + (Vector2.down * 4));
+                    case Direction.up: 
+                        nextTarget = (playerMovimentation.GetCachedPosition()+(Vector2.up*4));
+                        break;
+                    case Direction.left: 
+                        nextTarget = (playerMovimentation.GetCachedPosition() + (Vector2.left * 4));
+                        break;
+                    case Direction.right: 
+                        nextTarget = (playerMovimentation.GetCachedPosition() + (Vector2.right * 4));
+                        break;
+                    case Direction.down: 
+                        nextTarget = (playerMovimentation.GetCachedPosition() + (Vector2.down * 4));
+                        break;
                 }
+
+                nextTarget.x = Mathf.Clamp(nextTarget.x, 0, 27);
+                nextTarget.y = Mathf.Clamp(nextTarget.y, 0, 30);
+
+                return nextTarget;
                 break;
             case GhostType.blinky:
                 return playerMovimentation.GetCachedPosition();

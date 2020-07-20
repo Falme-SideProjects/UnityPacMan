@@ -35,7 +35,6 @@ public class GhostController : CharacterController
 
         ghostMovimentation = (GhostMovimentation)characterMovimentation;
 
-        Debug.Log(ghostAI.GetCurrentTarget());
 
         initialized = true;
     }
@@ -52,9 +51,7 @@ public class GhostController : CharacterController
 
         Vector2 _ghostPosition = characterMovimentation.GetPositionInGrid(startPosition, endPosition, new Vector2(_limitX, _limitY));
 
-        if (ghostAI.GetGhostType() == GhostType.inky)
-            Debug.Log(ghostAI.GetGhostType()+"# " + ghostAI.GetDistanceBetweenTileToTarget(_ghostPosition));
-
+        Debug.Log(_ghostPosition);
 
         CheckNextPosition(_ghostPosition);
     }
@@ -62,10 +59,6 @@ public class GhostController : CharacterController
     private void CheckNextPosition(Vector2 _ghostPosition)
     {
 
-        if (ghostAI.GetGhostType() == GhostType.inky)
-        {
-            Debug.Log(ghostMovimentation.GetCurrentDirection());
-        }
 
         if(_ghostPosition != cachedGhostPosition)
         {
@@ -77,15 +70,7 @@ public class GhostController : CharacterController
 
         characterMovimentation.Move(ghostMovimentation.GetCurrentDirection(), Time.deltaTime);
 
-        if (ghostAI.GetGhostType() == GhostType.inky)
-            Debug.Log(ghostMovimentation.GetCurrentDirection());
 
-    }
-
-
-    private bool MoveRandomPosition()
-    {
-        return false;
     }
 
     public GhostAI GetGhostAI()

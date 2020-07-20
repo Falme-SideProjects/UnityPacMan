@@ -6,15 +6,17 @@ public class GhostStateFrightened : IGhostState
 {
     public Vector2 GetStateTarget(GhostType ghostType, List<List<ScenarioMazeElement>> scenarioGrid, PlayerMovimentation playerMovimentation)
     {
-        switch (ghostType)
+        int RandomDirection = Random.Range(0, 4);
+
+        switch (RandomDirection)
         {
-            case GhostType.pinky:
+            case 0:
                 return new Vector2(0, 0);
-            case GhostType.blinky:
+            case 1:
                 return new Vector2(scenarioGrid[0].Count - 1, 0);
-            case GhostType.clyde:
+            case 2:
                 return new Vector2(0, scenarioGrid.Count - 1);
-            case GhostType.inky:
+            case 3:
                 return new Vector2(scenarioGrid[0].Count - 1, scenarioGrid.Count - 1);
         }
 
