@@ -5,8 +5,10 @@ public class CharacterMovimentation
     private MovementPermission movementPermission;
 
     private Vector2 position;
+    private Vector2 gridPosition;
     private Vector2 initialPosition;
     private Vector2 screenLimit;
+    private Direction currentDirection;
 
     public CharacterMovimentation(ScreenDataScriptableObject screenData=null)
     {
@@ -44,6 +46,11 @@ public class CharacterMovimentation
         this.position = newPosition;
     }
 
+    public Vector2 GetCachedPosition()
+    {
+        return this.gridPosition;
+    }
+
     public void Move(Direction direction, float delta = 1f)
     {
         if (!movementPermission.CanMoveAt(direction))
@@ -64,6 +71,8 @@ public class CharacterMovimentation
                 this.position += Vector2.down * delta;
                 break;
         }
+        
+        this.currentDirection = direction;
 
         CheckWarp(screenLimit);
     }
@@ -90,6 +99,8 @@ public class CharacterMovimentation
         int _x = GetPositionBetweenTwoNumbers((int)arrayLength.x, corneredEndPosition.x, corneredPlayerPosition.x);
         int _y = GetPositionBetweenTwoNumbers((int)arrayLength.y, corneredEndPosition.y, corneredPlayerPosition.y);
 
+        this.gridPosition = new Vector2(_x, _y);
+
         return new Vector2(_x, _y);
     }
 
@@ -111,5 +122,10 @@ public class CharacterMovimentation
         }
 
         return index;
+    }
+
+    public Direction GetCurrentDirection()
+    {
+        return this.currentDirection;
     }
 }

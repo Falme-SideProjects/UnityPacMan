@@ -10,6 +10,8 @@ public class GhostAI
     private List<List<ScenarioMazeElement>> scenarioGrid;
     private Vector2 targetPosition;
     private Vector2 ghostPosition;
+    private IGhostState ghostState;
+    private PlayerMovimentation playerMovimentation;
 
 
 
@@ -31,6 +33,26 @@ public class GhostAI
     public void SetGhostCurrentState(GhostState newState)
     {
         currentState = newState;
+        SetGhostStateClass();
+    }
+
+    private void SetGhostStateClass()
+    {
+        switch(currentState)
+        {
+            case GhostState.scatter:
+                ghostState = new GhostStateScatter();
+                break;
+            case GhostState.chase:
+                ghostState = new GhostStateChase();
+                break;
+            case GhostState.eaten:
+                ghostState = new GhostStateEaten();
+                break;
+            case GhostState.frightened:
+                ghostState = new GhostStateFrightened();
+                break;
+        }
     }
 
     public List<List<ScenarioMazeElement>> GetScenarioGrid()
@@ -58,24 +80,9 @@ public class GhostAI
             return;
         }
 
-        if(GetGhostCurrentState().Equals(GhostState.scatter))
-        {
-            switch(GetGhostType())
-            {
-                case GhostType.pinky:
-                    this.targetPosition = new Vector2(0, 0);
-                    break;
-                case GhostType.blinky:
-                    this.targetPosition = new Vector2(GetScenarioGrid()[0].Count-1, 0);
-                    break;
-                case GhostType.clyde:
-                    this.targetPosition = new Vector2(0, GetScenarioGrid().Count-1);
-                    break;
-                case GhostType.inky:
-                    this.targetPosition = new Vector2(GetScenarioGrid()[0].Count-1, GetScenarioGrid().Count-1);
-                    break;
-            }
-        }
+        this.targetPosition = ghostState.GetStateTarget(GetGhostType(), GetScenarioGrid(), this.playerMovimentation);
+
+        
     }
 
     public float GetDistanceBetweenTiles(Vector2 origin, Vector2 destiny)
@@ -180,6 +187,11 @@ public class GhostAI
         int _x = (int)characterPosition.x;
         int _y = (int)characterPosition.y;
         return (_x == 13 || _x == 14) && _y == 11;
+    }
+
+    public void SetPlayerMovimentation(PlayerMovimentation _playerMovimentation)
+    {
+        this.playerMovimentation = _playerMovimentation;
     }
 
     public void SetGhostPosition(Vector2 position)
