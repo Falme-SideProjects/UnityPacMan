@@ -74,7 +74,7 @@ public class GhostAI
     {
         if (GetScenarioGrid().Count == 0) return;
 
-        if(IsGhostInBox(ghostPosition))
+        if(IsGhostInBox(ghostPosition) && !CanEnterBox())
         {
             this.targetPosition = new Vector2(13,11);
             return;
@@ -165,7 +165,7 @@ public class GhostAI
 
         if (!this.scenarioGrid[(int)characterPosition.y+1][(int)characterPosition.x].elementType.Equals(ElementType.wall) &&
             !currentDirection.Equals(Direction.up) &&
-            !GhostAtBoxDoor(characterPosition)) 
+            (!GhostAtBoxDoor(characterPosition) || CanEnterBox())) 
             directionList.Add(Direction.down);
 
         if(IsOnEdge((int)characterPosition.x, (int)characterPosition.y, Direction.left))
@@ -204,6 +204,11 @@ public class GhostAI
         int _x = (int)characterPosition.x;
         int _y = (int)characterPosition.y;
         return (_x == 13 || _x == 14) && _y == 11;
+    }
+
+    private bool CanEnterBox()
+    {
+        return this.GetGhostCurrentState().Equals(GhostState.eaten);
     }
 
     public bool IsOnEdge(int _x, int _y, Direction currentDirection)

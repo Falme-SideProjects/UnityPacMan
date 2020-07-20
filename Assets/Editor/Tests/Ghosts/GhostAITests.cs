@@ -171,8 +171,6 @@ namespace Tests
 
             List<Direction> directions = ghostAI.GetPermittedDirections(new Vector2(_posX, _posY), _currentDirection);
 
-            for (int a = 0; a < directions.Count; a++) Debug.Log(directions[a].ToString());
-
             Assert.AreEqual(_expectedLength, directions.Count);
         }
 
@@ -214,6 +212,27 @@ namespace Tests
             List<List<ScenarioMazeElement>> dummyGrid = GetFacadeMap();
 
             ghostAI.SetScenarioGrid(dummyGrid);
+
+            List<Direction> directions = ghostAI.GetPermittedDirections(new Vector2(_posX, _posY), _currentDirection);
+
+            Assert.AreEqual(_expectedLength, directions.Count);
+        }
+
+        [Test]
+        [TestCase(13, 11, Direction.up, GhostState.eaten, 2)]
+        [TestCase(13, 11, Direction.right, GhostState.eaten, 2)]
+        [TestCase(14, 11, Direction.left, GhostState.eaten, 2)]
+        [TestCase(14, 11, Direction.up, GhostState.eaten, 2)]
+        public void GetPermittedDirections_DoReturnToBoxIfEaten_ReturnArrayDirections(int _posX,
+                                                                                      int _posY,
+                                                                                      Direction _currentDirection,
+                                                                                      GhostState _ghostState,
+                                                                                      int _expectedLength)
+        {
+            List<List<ScenarioMazeElement>> dummyGrid = GetFacadeMap();
+
+            ghostAI.SetScenarioGrid(dummyGrid);
+            ghostAI.SetGhostCurrentState(_ghostState);
 
             List<Direction> directions = ghostAI.GetPermittedDirections(new Vector2(_posX, _posY), _currentDirection);
 
@@ -286,8 +305,6 @@ namespace Tests
             ghostAI.SetGhostType(_ghostType);
             ghostAI.SetGhostCurrentState(GhostState.scatter);
             ghostAI.SetCurrentTarget();
-
-            Debug.Log(ghostAI.GetCurrentTarget());
 
             Direction _actual = ghostAI.GetNextNearestMove(new Vector2(_posX, _posY), _currentDirection);
 

@@ -132,6 +132,7 @@ MonoBehaviour:
   screenData: {fileID: 11400000, guid: 66254da2ce7c25d44abd82ba9ec82cec, type: 2}
   ghostAI:
     ghostType: 2
+  ghostStateData: {fileID: 11400000, guid: 081f119ba21204c4c86a78547fcbb29a, type: 2}
 --- !u!1 &5340769905268601306
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,6 +231,7 @@ MonoBehaviour:
   screenData: {fileID: 11400000, guid: 66254da2ce7c25d44abd82ba9ec82cec, type: 2}
   ghostAI:
     ghostType: 1
+  ghostStateData: {fileID: 11400000, guid: 081f119ba21204c4c86a78547fcbb29a, type: 2}
 --- !u!1 &5508425623989625010
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,6 +329,7 @@ MonoBehaviour:
   screenData: {fileID: 11400000, guid: 66254da2ce7c25d44abd82ba9ec82cec, type: 2}
   ghostAI:
     ghostType: 3
+  ghostStateData: {fileID: 11400000, guid: 081f119ba21204c4c86a78547fcbb29a, type: 2}
 --- !u!1 &9210028279720500921
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,3 +428,4 @@ MonoBehaviour:
   screenData: {fileID: 11400000, guid: 66254da2ce7c25d44abd82ba9ec82cec, type: 2}
   ghostAI:
     ghostType: 0
+  ghostStateData: {fileID: 11400000, guid: 081f119ba21204c4c86a78547fcbb29a, type: 2}

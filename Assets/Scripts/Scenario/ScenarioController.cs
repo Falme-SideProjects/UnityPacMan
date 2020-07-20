@@ -33,7 +33,7 @@ public class ScenarioController : MonoBehaviour
     void Update()
     {
         CheckCharactersMovimentBasedOnLocal();
-        CheckForCollision();
+        CheckForOverlaps();
 
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
@@ -205,8 +205,15 @@ public class ScenarioController : MonoBehaviour
                 scenarioGrid[_y][_x].elementSpriteRenderer.enabled = false;
                 pelletsCollected++;
 
-                if (scenarioGrid[_y][_x].elementType.Equals(ElementType.pacdot)) scoreController.Score.AddScoreBasedOnItem(Items.pacdot);
-                else scoreController.Score.AddScoreBasedOnItem(Items.power);
+                if (scenarioGrid[_y][_x].elementType.Equals(ElementType.pacdot))
+                {
+                    scoreController.Score.AddScoreBasedOnItem(Items.pacdot);
+                }
+                else
+                {
+                    CollectedPowerPellet();
+                    scoreController.Score.AddScoreBasedOnItem(Items.power);
+                }
 
 
                 scoreController.UpdateUI();
@@ -224,24 +231,58 @@ public class ScenarioController : MonoBehaviour
         }
     }
 
-    private void CheckForCollision()
+    private void CheckForOverlaps()
     {
         Vector2 _levelPosition = GetLevelPosition();
+        Vector2 _playerPosition = playerMovimentation.GetPositionInGrid(
+                                                new Vector2(_levelPosition.x, -_levelPosition.y),
+                                              new Vector2(-_levelPosition.x, _levelPosition.y),
+                                              new Vector2(scenarioData.levelWidth, scenarioData.levelHeight));
+        Vector2[] _ghostPositions = new Vector2[ghostController.Length];
 
-        for(int a=0; a<ghostController.Length; a++)
+        for (int a = 0; a < ghostController.Length; a++)
+            _ghostPositions[a] = ghostController[a].GetCharacterMovimentation().GetPositionInGrid(
+                                                new Vector2(_levelPosition.x, -_levelPosition.y),
+                                              new Vector2(-_levelPosition.x, _levelPosition.y),
+                                              new Vector2(scenarioData.levelWidth, scenarioData.levelHeight));
+
+        CheckForPlayerAndGhostCollision(_playerPosition, _ghostPositions);
+        CheckForEatenGhostBackToBox(_ghostPositions);
+    }
+
+    private void CheckForPlayerAndGhostCollision(Vector2 _playerPosition, Vector2[] _ghostPositions)
+    {
+        for(int a=0; a< _ghostPositions.Length; a++)
+            if (Vector2.Distance(_ghostPositions[a], _playerPosition) == 0)
+            {
+                if(ghostController[a].GetGhostAI().GetGhostCurrentState().Equals(GhostState.frightened))
+                {
+                    ghostController[a].GetGhostAI().SetGhostCurrentState(GhostState.eaten);
+                    ghostController[a].UpdateGhostVisuals();
+                } else if(!ghostController[a].GetGhostAI().GetGhostCurrentState().Equals(GhostState.eaten))
+                {
+                    PlayerDeath();
+                }
+                return;
+            }
+    }
+
+    private void CheckForEatenGhostBackToBox(Vector2[] _ghostPositions)
+    {
+        for (int a = 0; a < _ghostPositions.Length; a++)
+            if (_ghostPositions[a].x == 13 && _ghostPositions[a].y == 13)
+            {
+                ghostController[a].GetGhostAI().SetGhostCurrentState(GhostState.scatter);
+                ghostController[a].UpdateGhostVisuals();
+            }
+    }
+
+    private void CollectedPowerPellet()
+    {
+        for (int a = 0; a < ghostController.Length; a++)
         {
-            Vector2 _ghostPosition = ghostController[a].GetCharacterMovimentation().GetPositionInGrid(
-                                                new Vector2(_levelPosition.x, -_levelPosition.y),
-                                              new Vector2(-_levelPosition.x, _levelPosition.y),
-                                              new Vector2(scenarioData.levelWidth, scenarioData.levelHeight));
-
-            Vector2 _playerPosition = playerMovimentation.GetPositionInGrid(
-                                                new Vector2(_levelPosition.x, -_levelPosition.y),
-                                              new Vector2(-_levelPosition.x, _levelPosition.y),
-                                              new Vector2(scenarioData.levelWidth, scenarioData.levelHeight));
-
-            if (Vector2.Distance(_ghostPosition, _playerPosition) == 0)
-                PlayerDeath();
+            ghostController[a].GetGhostAI().SetGhostCurrentState(GhostState.frightened);
+            ghostController[a].UpdateGhostVisuals();
         }
     }
 

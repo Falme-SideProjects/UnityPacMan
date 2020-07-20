@@ -5,13 +5,19 @@ using UnityEngine;
 public class GhostController : CharacterController
 {
     [SerializeField] private GhostAI ghostAI;
+    [SerializeField] private GhostStateDataScriptableObject ghostStateData;
     private bool initialized = false;
     GhostMovimentation ghostMovimentation;
+    private Sprite cachedSprite;
+    private SpriteRenderer spriteRenderer;
+
 
     private Vector2 cachedGhostPosition;
 
     private void Start()
     {
+        this.spriteRenderer = GetComponent<SpriteRenderer>();
+        this.cachedSprite = this.spriteRenderer.sprite;
     }
 
     void Update()
@@ -56,8 +62,6 @@ public class GhostController : CharacterController
 
     private void CheckNextPosition(Vector2 _ghostPosition)
     {
-
-
         if(_ghostPosition != cachedGhostPosition)
         {
             ghostAI.SetGhostPosition(_ghostPosition);
@@ -67,8 +71,22 @@ public class GhostController : CharacterController
         }
 
         characterMovimentation.Move(ghostMovimentation.GetCurrentDirection(), Time.deltaTime);
+    }
 
-
+    public void UpdateGhostVisuals()
+    {
+        for(int a=0; a< ghostStateData.ghostStateInfos.Length; a++)
+        {
+            if (GetGhostAI().GetGhostCurrentState().Equals(ghostStateData.ghostStateInfos[a].state))
+            {
+                if (ghostStateData.ghostStateInfos[a].stateSprite == null)
+                    this.spriteRenderer.sprite = this.cachedSprite;
+                else
+                    this.spriteRenderer.sprite = ghostStateData.ghostStateInfos[a].stateSprite;
+                
+                return;
+            }
+        }
     }
 
     public GhostAI GetGhostAI()
