@@ -14,4 +14,5 @@ public class ScenarioDataScriptableObject : ScriptableObject
 
     [Header("Sprites")]
     public Sprite dotSprite;
+    public Sprite powerPelletSprite;
 }

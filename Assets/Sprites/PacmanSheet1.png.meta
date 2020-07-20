@@ -56,6 +56,15 @@ TextureImporter:
   - first:
       213: 8766930323085673818
     second: PacmanSheet1_9
+  - first:
+      213: 7228847146363221856
+    second: PacmanSheet1_8
+  - first:
+      213: -6615649884151918121
+    second: PacmanSheet1_9
+  - first:
+      213: -6749234088394547955
+    second: PacmanSheet1_10
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -347,8 +356,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fb0d5a2bcbb262940800000000000000
-      internalID: 5270948503334801599
+      spriteID: 0677396fd26025460800000000000000
+      internalID: 7228847146363221856
       vertices: []
       indices: 
       edges: []
@@ -368,8 +377,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a554f1efda46aa970800000000000000
-      internalID: 8766930323085673818
+      spriteID: 7d155c84b7d7034a0800000000000000
+      internalID: -6615649884151918121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PacmanSheet1_10
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0d19470b57e552a0800000000000000
+      internalID: -6749234088394547955
       vertices: []
       indices: 
       edges: []

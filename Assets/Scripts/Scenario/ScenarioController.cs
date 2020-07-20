@@ -86,7 +86,7 @@ public class ScenarioController : MonoBehaviour
                 _scenarioMazeElement.elementCollectable = true;
                 break;
             case ElementType.power:
-                tileObject.GetComponent<SpriteRenderer>().color = Color.green;
+                _scenarioMazeElement.elementSpriteRenderer.sprite = scenarioData.powerPelletSprite;
                 _scenarioMazeElement.elementCollectable = true;
                 break;
         }
