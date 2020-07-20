@@ -32,7 +32,7 @@ public class ScenarioController : MonoBehaviour
     void Update()
     {
         CheckCharactersMovimentBasedOnLocal();
-
+        CheckForCollision();
 
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
@@ -106,6 +106,13 @@ public class ScenarioController : MonoBehaviour
                 ResetScenarioCell(this.scenarioGrid[h][w]);
 
         playerMovimentation.ResetPosition();
+
+        for (int a = 0; a < ghostController.Length; a++)
+        {
+            ghostController[a].GetCharacterMovimentation().ResetPosition();
+
+        }
+
         pelletsCollected = 0;
     }
 
@@ -213,6 +220,27 @@ public class ScenarioController : MonoBehaviour
         if(pelletsCollected >= scenarioData.totalPelletsToCollect)
         {
             ResetScenario();
+        }
+    }
+
+    private void CheckForCollision()
+    {
+        Vector2 _levelPosition = GetLevelPosition();
+
+        for(int a=0; a<ghostController.Length; a++)
+        {
+            Vector2 _ghostPosition = ghostController[a].GetCharacterMovimentation().GetPositionInGrid(
+                                                new Vector2(_levelPosition.x, -_levelPosition.y),
+                                              new Vector2(-_levelPosition.x, _levelPosition.y),
+                                              new Vector2(scenarioData.levelWidth, scenarioData.levelHeight));
+
+            Vector2 _playerPosition = playerMovimentation.GetPositionInGrid(
+                                                new Vector2(_levelPosition.x, -_levelPosition.y),
+                                              new Vector2(-_levelPosition.x, _levelPosition.y),
+                                              new Vector2(scenarioData.levelWidth, scenarioData.levelHeight));
+
+            if (Vector2.Distance(_ghostPosition, _playerPosition) == 0)
+                ResetScenario();
         }
     }
 

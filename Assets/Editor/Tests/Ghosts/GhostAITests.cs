@@ -324,10 +324,7 @@ namespace Tests
                                                                                          float _expectedY)
         {
             List<List<ScenarioMazeElement>> dummyGrid = GetFacadeMap();
-
             ghostAI.SetScenarioGrid(dummyGrid);
-
-            Debug.Log(dummyGrid[0].Count - 1);
 
             Vector2 _actual = ghostAI.GetTilePositionBasedOnDirection(new Vector2(_posX, _posY), direction);
 
