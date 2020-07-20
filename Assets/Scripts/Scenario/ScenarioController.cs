@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Collections;
 
 public class ScenarioController : MonoBehaviour
 {
     private ScenarioMap scenarioMap;
     private List<List<ScenarioMazeElement>> scenarioGrid;
     private PlayerMovimentation playerMovimentation;
+
+    private Coroutine powerPelletCoroutine;
 
     private int pelletsCollected = 0;
 
@@ -284,6 +287,23 @@ public class ScenarioController : MonoBehaviour
             ghostController[a].GetGhostAI().SetGhostCurrentState(GhostState.frightened);
             ghostController[a].UpdateGhostVisuals();
         }
+
+        if (powerPelletCoroutine != null) StopCoroutine(powerPelletCoroutine);
+        powerPelletCoroutine = StartCoroutine(PowerPelletDurationCoroutine());
+    }
+
+    private void FinishPowerPelletEffect()
+    {
+        for (int a = 0; a < ghostController.Length; a++)
+        {
+            if(ghostController[a].GetGhostAI().GetGhostCurrentState().Equals(GhostState.frightened))
+            {
+                ghostController[a].GetGhostAI().SetGhostCurrentState(GhostState.chase);
+                ghostController[a].UpdateGhostVisuals();
+            }
+        }
+
+        powerPelletCoroutine = null;
     }
 
     private void PlayerDeath()
@@ -295,6 +315,12 @@ public class ScenarioController : MonoBehaviour
             ghostController[a].GetCharacterMovimentation().ResetPosition();
 
         }
+    }
+
+    private IEnumerator PowerPelletDurationCoroutine()
+    {
+        yield return new WaitForSeconds(5f);
+        FinishPowerPelletEffect();
     }
 
 

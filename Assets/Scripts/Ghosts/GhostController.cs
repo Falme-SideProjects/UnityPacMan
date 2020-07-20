@@ -25,8 +25,8 @@ public class GhostController : CharacterController
         if (!initialized) return;
 
         if (Input.GetKeyDown(KeyCode.Alpha1)) ghostAI.SetGhostCurrentState(GhostState.eaten);
-        else if (Input.GetKeyDown(KeyCode.Alpha2)) ghostAI.SetGhostCurrentState(GhostState.scatter);
-        else if (Input.GetKeyDown(KeyCode.Alpha3)) ghostAI.SetGhostCurrentState(GhostState.frightened);
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) ghostAI.SetGhostCurrentState(GhostState.frightened);
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) ghostAI.SetGhostCurrentState(GhostState.scatter);
         else if (Input.GetKeyDown(KeyCode.Alpha4)) ghostAI.SetGhostCurrentState(GhostState.chase);
 
         CheckNearestPosition();
