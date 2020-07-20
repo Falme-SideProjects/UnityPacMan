@@ -51,8 +51,6 @@ public class GhostController : CharacterController
 
         Vector2 _ghostPosition = characterMovimentation.GetPositionInGrid(startPosition, endPosition, new Vector2(_limitX, _limitY));
 
-        Debug.Log(_ghostPosition);
-
         CheckNextPosition(_ghostPosition);
     }
 

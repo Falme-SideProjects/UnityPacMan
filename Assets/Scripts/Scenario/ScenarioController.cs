@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 public class ScenarioController : MonoBehaviour
 {
@@ -240,7 +241,18 @@ public class ScenarioController : MonoBehaviour
                                               new Vector2(scenarioData.levelWidth, scenarioData.levelHeight));
 
             if (Vector2.Distance(_ghostPosition, _playerPosition) == 0)
-                ResetScenario();
+                PlayerDeath();
+        }
+    }
+
+    private void PlayerDeath()
+    {
+        playerMovimentation.ResetPosition();
+
+        for (int a = 0; a < ghostController.Length; a++)
+        {
+            ghostController[a].GetCharacterMovimentation().ResetPosition();
+
         }
     }
 
