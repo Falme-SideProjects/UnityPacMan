@@ -12,6 +12,7 @@ public class GhostAI
     private Vector2 ghostPosition;
     private IGhostState ghostState;
     private PlayerMovimentation playerMovimentation;
+    private GhostController[] ghostControllers;
 
 
 
@@ -80,7 +81,7 @@ public class GhostAI
             return;
         }
 
-        this.targetPosition = ghostState.GetStateTarget(GetGhostType(), GetScenarioGrid(), this.playerMovimentation);
+        this.targetPosition = ghostState.GetStateTarget(GetGhostType(), GetScenarioGrid(), this.playerMovimentation, this.ghostControllers);
 
         
     }
@@ -221,6 +222,11 @@ public class GhostAI
     public void SetPlayerMovimentation(PlayerMovimentation _playerMovimentation)
     {
         this.playerMovimentation = _playerMovimentation;
+    }
+
+    public void SetGhostControllers(GhostController[] _ghostControllers)
+    {
+        this.ghostControllers = _ghostControllers;
     }
 
     public void SetGhostPosition(Vector2 position)

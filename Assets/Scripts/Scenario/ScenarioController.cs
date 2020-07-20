@@ -50,8 +50,10 @@ public class ScenarioController : MonoBehaviour
         {
             ghostController[a].GetGhostAI().SetScenarioGrid(this.scenarioGrid);
             ghostController[a].GetGhostAI().SetPlayerMovimentation(playerMovimentation);
+            ghostController[a].GetGhostAI().SetGhostControllers(ghostController);
             ghostController[a].InitializeGhost();
         }
+
     }
 
 

@@ -3,7 +3,10 @@ using UnityEngine;
 
 public class GhostStateScatter : IGhostState
 {
-    public Vector2 GetStateTarget(GhostType ghostType, List<List<ScenarioMazeElement>> scenarioGrid, PlayerMovimentation playerMovimentation)
+    public Vector2 GetStateTarget(GhostType ghostType,
+                                    List<List<ScenarioMazeElement>> scenarioGrid,
+                                    PlayerMovimentation playerMovimentation,
+                                    GhostController[] ghostControllers)
     {
         switch (ghostType)
         {

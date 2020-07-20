@@ -9,6 +9,7 @@ namespace Tests
     public class GhostAITests
     {
         private GhostAI ghostAI;
+        private List<List<ScenarioMazeElement>> facadeMap;
 
         [SetUp]
         public void Setup()
@@ -374,11 +375,15 @@ namespace Tests
 
         private List<List<ScenarioMazeElement>> GetFacadeMap()
         {
-            ScenarioMap scenarioMap = new ScenarioMap();
-            TextAsset mapText = (TextAsset)UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Scripts/Data/LevelMap/Map.txt", typeof(TextAsset));
-            string inlineMap = System.Text.RegularExpressions.Regex.Replace(mapText.text, @"\t|\n|\r", "");
-            scenarioMap.SetScenarioString(inlineMap);
-            return scenarioMap.GetScenarioGrid(28, 31);
+            if (facadeMap != null) return facadeMap;
+            else
+            {
+                ScenarioMap scenarioMap = new ScenarioMap();
+                TextAsset mapText = (TextAsset)UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Scripts/Data/LevelMap/Map.txt", typeof(TextAsset));
+                string inlineMap = System.Text.RegularExpressions.Regex.Replace(mapText.text, @"\t|\n|\r", "");
+                scenarioMap.SetScenarioString(inlineMap);
+                return scenarioMap.GetScenarioGrid(28, 31);
+            }
         }
 
 

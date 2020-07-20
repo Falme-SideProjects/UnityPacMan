@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class GhostStateFrightened : IGhostState
 {
-    public Vector2 GetStateTarget(GhostType ghostType, List<List<ScenarioMazeElement>> scenarioGrid, PlayerMovimentation playerMovimentation)
+    public Vector2 GetStateTarget(GhostType ghostType,
+                                    List<List<ScenarioMazeElement>> scenarioGrid,
+                                    PlayerMovimentation playerMovimentation,
+                                    GhostController[] ghostControllers)
     {
         int RandomDirection = Random.Range(0, 4);
 

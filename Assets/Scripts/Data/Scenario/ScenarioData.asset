@@ -20,3 +20,5 @@ MonoBehaviour:
   tile: {fileID: 7034929804800192837, guid: 64e8a3e0cf79d4a4c901c79c1184bb15, type: 3}
   dotSprite: {fileID: 4243859876787078965, guid: bc1f6d9ae65ec00408a91f7a2f7c9b62,
     type: 3}
+  powerPelletSprite: {fileID: -6749234088394547955, guid: bc1f6d9ae65ec00408a91f7a2f7c9b62,
+    type: 3}
