@@ -37,7 +37,6 @@ public class GhostStateChase : IGhostState
 
                 Vector2 blinkyPosition = GetBlinkyPosition();
 
-                Debug.Log(blinkyPosition);
                 nextTarget = GetMirroredPositionBetweenBlinkyAndPlayer(nextTarget, blinkyPosition);
 
 

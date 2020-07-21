@@ -4,11 +4,12 @@ public class CharacterMovimentation
 {
     private MovementPermission movementPermission;
 
-    private Vector2 position;
+    protected Vector2 position;
     private Vector2 gridPosition;
     private Vector2 initialPosition;
     private Vector2 screenLimit;
-    private Direction currentDirection;
+    protected Direction currentDirection;
+    protected Direction nextDirection = Direction.right;
 
     public CharacterMovimentation(ScreenDataScriptableObject screenData=null)
     {
@@ -34,6 +35,7 @@ public class CharacterMovimentation
     public void ResetPosition()
     {
         this.SetPosition(this.GetInitialPosition());
+        currentDirection = Direction.right;
     }
 
     public Vector2 GetPosition()
@@ -51,10 +53,11 @@ public class CharacterMovimentation
         return this.gridPosition;
     }
 
-    public void Move(Direction direction, float delta = 1f)
+    public virtual void Move(Direction direction, float delta = 1f)
     {
         if (!movementPermission.CanMoveAt(direction))
             return;
+
 
         switch (direction)
         {
@@ -127,5 +130,15 @@ public class CharacterMovimentation
     public Direction GetCurrentDirection()
     {
         return this.currentDirection;
+    }
+
+    public void SetNextDirection(Direction _nextDirection)
+    {
+        this.nextDirection = _nextDirection;
+    }
+
+    public Vector2 GetScreenLimit()
+    {
+        return this.screenLimit;
     }
 }
