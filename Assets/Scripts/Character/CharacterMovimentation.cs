@@ -5,11 +5,11 @@ public class CharacterMovimentation
     private MovementPermission movementPermission;
 
     protected Vector2 position;
+    protected Direction currentDirection;
+    protected Direction nextDirection = Direction.right;
     private Vector2 gridPosition;
     private Vector2 initialPosition;
     private Vector2 screenLimit;
-    protected Direction currentDirection;
-    protected Direction nextDirection = Direction.right;
 
     public CharacterMovimentation(ScreenDataScriptableObject screenData=null)
     {
@@ -137,8 +137,34 @@ public class CharacterMovimentation
         this.nextDirection = _nextDirection;
     }
 
+    public Direction GetNextDirection()
+    {
+        return this.nextDirection;
+    }
+
     public Vector2 GetScreenLimit()
     {
         return this.screenLimit;
+    }
+
+    public bool ReachedOffsetToChangeDirection(Direction _currentDirection, Vector2 _currentPositionInWorld, Vector2 _tilePositionInWorld)
+    {
+        switch(_currentDirection)
+        {
+            case Direction.up:
+                return (_currentPositionInWorld.y >= _tilePositionInWorld.y);
+                break;
+            case Direction.left:
+                return (_currentPositionInWorld.x <= _tilePositionInWorld.x);
+                break;
+            case Direction.right:
+                return (_currentPositionInWorld.x >= _tilePositionInWorld.x);
+                break;
+            case Direction.down:
+                return (_currentPositionInWorld.y <= _tilePositionInWorld.y);
+                break;
+        }
+
+        return false;
     }
 }

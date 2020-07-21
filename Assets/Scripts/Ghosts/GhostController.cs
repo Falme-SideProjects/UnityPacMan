@@ -13,6 +13,8 @@ public class GhostController : CharacterController
 
 
     private Vector2 cachedGhostPosition;
+    private Direction cachedTemporaryDirection;
+    private bool waitingForCachedDirection = false;
 
     private void Start()
     {
@@ -62,15 +64,29 @@ public class GhostController : CharacterController
 
     private void CheckNextPosition(Vector2 _ghostPosition)
     {
-        if(_ghostPosition != cachedGhostPosition)
+        if (_ghostPosition != cachedGhostPosition)
         {
+
+            Direction _direction = ghostMovimentation.GetCurrentDirection();
             ghostAI.SetGhostPosition(_ghostPosition);
             ghostAI.SetCurrentTarget();
             ghostMovimentation.SetCurrentDirection(ghostAI.GetNextNearestMove(_ghostPosition, ghostMovimentation.GetCurrentDirection()));
             cachedGhostPosition = _ghostPosition;
+
+            if(_direction != ghostMovimentation.GetCurrentDirection())
+            ghostMovimentation.SetPosition(ghostAI.GetScenarioGrid()[(int)_ghostPosition.y][(int)_ghostPosition.x].elementPositionInWorld);
         }
 
-        characterMovimentation.Move(ghostMovimentation.GetCurrentDirection(), Time.deltaTime);
+            characterMovimentation.Move(ghostMovimentation.GetCurrentDirection(), Time.deltaTime);
+    }
+
+    private bool CheckReachedCurvePoint(Vector2 _ghostPosition)
+    {
+        Vector2 _tilePosition = ghostAI.GetScenarioGrid()[(int)_ghostPosition.y][(int)_ghostPosition.x].elementPositionInWorld;
+
+        return ghostMovimentation.ReachedOffsetToChangeDirection(ghostMovimentation.GetCurrentDirection(), 
+                                                                 ghostMovimentation.GetPosition(), 
+                                                                 _tilePosition);
     }
 
     public void UpdateGhostVisuals()

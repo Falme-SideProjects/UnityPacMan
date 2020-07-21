@@ -191,5 +191,31 @@ namespace Tests
             Assert.AreEqual(new Vector2(1f, 10f), _actual);
         }
 
+        [Test]
+        [TestCase(Direction.right, 1, 1, 1, 1, true)]
+        [TestCase(Direction.right, 0.99f, 1, 1, 1, false)]
+        [TestCase(Direction.left, 1, 1, 1, 1, true)]
+        [TestCase(Direction.left, 1.01f, 1, 1, 1, false)]
+        [TestCase(Direction.up, 1, 1, 1, 1, true)]
+        [TestCase(Direction.up, 1, 0.99f, 1, 1, false)]
+        [TestCase(Direction.down, 1, 1, 1, 1, true)]
+        [TestCase(Direction.down, 1, 1.01f, 1, 1, false)]
+        public void ReachedOffsetToChangeDirection_IfPassedThreshold_ReturnTrue(Direction _currentDirection,
+                                                                                float _currentPositionX,
+                                                                                float _currentPositionY,
+                                                                                float _tilePositionX,
+                                                                                float _tilePositionY,
+                                                                                bool _expected)
+        {
+            Vector2 currentPosition = new Vector2(_currentPositionX, _currentPositionY);
+            Vector2 tilePosition = new Vector2(_tilePositionX, _tilePositionY);
+
+            bool _actual = characterMovimentation.ReachedOffsetToChangeDirection(_currentDirection,
+                                                                                currentPosition,
+                                                                                tilePosition);
+
+            Assert.AreEqual(_expected, _actual);
+        }
+
     }
 }

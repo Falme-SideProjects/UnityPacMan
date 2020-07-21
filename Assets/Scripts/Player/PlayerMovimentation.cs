@@ -12,7 +12,6 @@ public class PlayerMovimentation : CharacterMovimentation
 
     public override void Move(Direction direction, float delta = 1)
     {
-        Debug.Log(GetCurrentDirection() + " : " + currentDirection + " : " + nextDirection);
         if (this.currentDirection != this.nextDirection &&
             GetMovementPermission().CanMoveAt(this.nextDirection))
             currentDirection = this.nextDirection;
@@ -36,8 +35,6 @@ public class PlayerMovimentation : CharacterMovimentation
                 this.position += Vector2.down * delta;
                 break;
         }
-
-        //this.currentDirection = direction;
 
         CheckWarp(GetScreenLimit());
     }
