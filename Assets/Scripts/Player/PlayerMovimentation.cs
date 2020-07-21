@@ -12,6 +12,7 @@ public class PlayerMovimentation : CharacterMovimentation
 
     public override void Move(Direction direction, float delta = 1)
     {
+
         if (this.currentDirection != this.nextDirection &&
             GetMovementPermission().CanMoveAt(this.nextDirection))
             currentDirection = this.nextDirection;

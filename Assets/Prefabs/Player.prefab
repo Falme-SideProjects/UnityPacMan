@@ -96,3 +96,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screenData: {fileID: 11400000, guid: 66254da2ce7c25d44abd82ba9ec82cec, type: 2}
   initialPlayerPosition: {x: 0, y: -2.14}
+  playerData: {fileID: 11400000, guid: e9c9d8ffa454e874b909be9b0b1b100a, type: 2}

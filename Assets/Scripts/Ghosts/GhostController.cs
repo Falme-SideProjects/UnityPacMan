@@ -6,6 +6,7 @@ public class GhostController : CharacterController
 {
     [SerializeField] private GhostAI ghostAI;
     [SerializeField] private GhostStateDataScriptableObject ghostStateData;
+    [SerializeField] private CharacterDataScriptableObject ghostData;
     private bool initialized = false;
     GhostMovimentation ghostMovimentation;
     private Sprite cachedSprite;
@@ -13,8 +14,6 @@ public class GhostController : CharacterController
 
 
     private Vector2 cachedGhostPosition;
-    private Direction cachedTemporaryDirection;
-    private bool waitingForCachedDirection = false;
 
     private void Start()
     {
@@ -74,19 +73,10 @@ public class GhostController : CharacterController
             cachedGhostPosition = _ghostPosition;
 
             if(_direction != ghostMovimentation.GetCurrentDirection())
-            ghostMovimentation.SetPosition(ghostAI.GetScenarioGrid()[(int)_ghostPosition.y][(int)_ghostPosition.x].elementPositionInWorld);
+                ghostMovimentation.SetPosition(ghostAI.GetScenarioGrid()[(int)_ghostPosition.y][(int)_ghostPosition.x].elementPositionInWorld);
         }
 
-            characterMovimentation.Move(ghostMovimentation.GetCurrentDirection(), Time.deltaTime);
-    }
-
-    private bool CheckReachedCurvePoint(Vector2 _ghostPosition)
-    {
-        Vector2 _tilePosition = ghostAI.GetScenarioGrid()[(int)_ghostPosition.y][(int)_ghostPosition.x].elementPositionInWorld;
-
-        return ghostMovimentation.ReachedOffsetToChangeDirection(ghostMovimentation.GetCurrentDirection(), 
-                                                                 ghostMovimentation.GetPosition(), 
-                                                                 _tilePosition);
+            characterMovimentation.Move(ghostMovimentation.GetCurrentDirection(), Time.deltaTime * ghostData.velocity);
     }
 
     public void UpdateGhostVisuals()

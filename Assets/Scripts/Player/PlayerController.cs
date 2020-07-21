@@ -3,6 +3,7 @@
 public class PlayerController : CharacterController
 {
     [SerializeField] private Vector2 initialPlayerPosition;
+    [SerializeField] private CharacterDataScriptableObject playerData;
 
     private void Awake()
     {
@@ -12,7 +13,7 @@ public class PlayerController : CharacterController
     void Update()
     {
         CheckInput();
-        characterMovimentation.Move(characterMovimentation.GetCurrentDirection(), Time.deltaTime);
+        characterMovimentation.Move(characterMovimentation.GetCurrentDirection(), Time.deltaTime* playerData.velocity);
         RefreshCharacter();
     }
 
