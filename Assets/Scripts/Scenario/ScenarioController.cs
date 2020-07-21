@@ -13,8 +13,13 @@ public class ScenarioController : MonoBehaviour
 
     private int pelletsCollected = 0;
 
+    private int indexPhase = 0;
+    private float timeForNextPhase = 0;
+    private float currentTimePhase = 0;
+
     [Header("Data")]
     [SerializeField] private ScenarioDataScriptableObject scenarioData;
+    [SerializeField] private GameplayTimersDataScriptableObject gameplayTimersData;
 
     [Header("References")]
     [SerializeField] private PlayerController playerController;
@@ -31,12 +36,14 @@ public class ScenarioController : MonoBehaviour
         playerMovimentation = (PlayerMovimentation)playerController.GetCharacterMovimentation();
         SpawnScenario();
         InitializeGhostController();
+        NextGhostTimerPhase();
     }
 
     void Update()
     {
         CheckCharactersMovimentBasedOnLocal();
         CheckForOverlaps();
+        CheckTimerPhase();
 
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
@@ -118,6 +125,8 @@ public class ScenarioController : MonoBehaviour
             ghostController[a].GetCharacterMovimentation().ResetPosition();
 
         }
+
+        ResetTimers();
 
         pelletsCollected = 0;
     }
@@ -321,8 +330,61 @@ public class ScenarioController : MonoBehaviour
 
     private IEnumerator PowerPelletDurationCoroutine()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(10f);
         FinishPowerPelletEffect();
+    }
+
+    private void CheckTimerPhase()
+    {
+        currentTimePhase += Time.deltaTime;
+        if(currentTimePhase > timeForNextPhase)
+        {
+            NextGhostTimerPhase();
+        }
+    }
+
+    private void NextGhostTimerPhase()
+    {
+        if(indexPhase >= gameplayTimersData.ghostStateTimestamps.Length)
+        {
+            for (int a = 0; a < ghostController.Length; a++)
+                if (!ghostController[a].GetGhostAI().GetGhostCurrentState().Equals(GhostState.frightened) &&
+                !ghostController[a].GetGhostAI().GetGhostCurrentState().Equals(GhostState.eaten))
+                    ghostController[a].GetGhostAI().SetGhostCurrentState(GhostState.chase);
+            
+            return;
+        }
+
+        timeForNextPhase = gameplayTimersData.ghostStateTimestamps[indexPhase].duration;
+
+        for(int a=0; a< ghostController.Length; a++)
+        {
+            if(!ghostController[a].GetGhostAI().GetGhostCurrentState().Equals(GhostState.frightened) &&
+                !ghostController[a].GetGhostAI().GetGhostCurrentState().Equals(GhostState.eaten))
+            {
+                ghostController[a].GetGhostAI().SetGhostCurrentState(gameplayTimersData.ghostStateTimestamps[indexPhase].ghostState);
+                ghostController[a].UpdateGhostVisuals();
+            }
+        }
+
+        currentTimePhase = 0;
+        indexPhase++;
+    }
+
+    private void ResetTimers()
+    {
+        if (powerPelletCoroutine != null)
+        {
+            StopCoroutine(powerPelletCoroutine);
+            powerPelletCoroutine = null;
+        }
+
+        FinishPowerPelletEffect();
+
+        indexPhase = 0;
+        timeForNextPhase = 0;
+        currentTimePhase = 0;
+        NextGhostTimerPhase();
     }
 
 

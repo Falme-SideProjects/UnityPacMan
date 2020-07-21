@@ -153,16 +153,12 @@ public class CharacterMovimentation
         {
             case Direction.up:
                 return (_currentPositionInWorld.y >= _tilePositionInWorld.y);
-                break;
             case Direction.left:
                 return (_currentPositionInWorld.x <= _tilePositionInWorld.x);
-                break;
             case Direction.right:
                 return (_currentPositionInWorld.x >= _tilePositionInWorld.x);
-                break;
             case Direction.down:
                 return (_currentPositionInWorld.y <= _tilePositionInWorld.y);
-                break;
         }
 
         return false;
