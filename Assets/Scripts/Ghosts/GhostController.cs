@@ -83,11 +83,9 @@ public class GhostController : CharacterController
             if (GetGhostAI().GetGhostCurrentState().Equals(ghostStateData.ghostStateInfos[a].state))
             {
                 if (ghostStateData.ghostStateInfos[a].stateSprite == null)
-                    if(this.cachedSprite != null) 
-                        this.spriteRenderer.sprite = this.cachedSprite;
+                    this.spriteRenderer.sprite = this.cachedSprite;
                 else
-                    if (ghostStateData.ghostStateInfos[a].stateSprite != null) 
-                        this.spriteRenderer.sprite = ghostStateData.ghostStateInfos[a].stateSprite;
+                    this.spriteRenderer.sprite = ghostStateData.ghostStateInfos[a].stateSprite;
                 
                 return;
             }
