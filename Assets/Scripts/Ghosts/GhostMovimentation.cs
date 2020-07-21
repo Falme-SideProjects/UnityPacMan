@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class GhostMovimentation : CharacterMovimentation
+﻿public class GhostMovimentation : CharacterMovimentation
 {
     private Direction currentDirection = Direction.up;
 

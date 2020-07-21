@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ScoreController : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private Text playerOneScoreText;
     [SerializeField] private Text highScoreText;
 

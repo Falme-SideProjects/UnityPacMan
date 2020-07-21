@@ -2,6 +2,7 @@
 
 public class PlayerController : CharacterController
 {
+    [Header("Data")]
     [SerializeField] private Vector2 initialPlayerPosition;
     [SerializeField] private CharacterDataScriptableObject playerData;
 

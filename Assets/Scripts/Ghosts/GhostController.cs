@@ -1,14 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GhostController : CharacterController
 {
+    [Header("References")]
     [SerializeField] private GhostAI ghostAI;
+
+    [Header("Data")]
     [SerializeField] private GhostStateDataScriptableObject ghostStateData;
     [SerializeField] private CharacterDataScriptableObject ghostData;
+
     private bool initialized = false;
-    GhostMovimentation ghostMovimentation;
+    private GhostMovimentation ghostMovimentation;
     private Sprite cachedSprite;
     private SpriteRenderer spriteRenderer;
 
@@ -24,11 +26,6 @@ public class GhostController : CharacterController
     void Update()
     {
         if (!initialized) return;
-
-        if (Input.GetKeyDown(KeyCode.Alpha1)) ghostAI.SetGhostCurrentState(GhostState.eaten);
-        else if (Input.GetKeyDown(KeyCode.Alpha2)) ghostAI.SetGhostCurrentState(GhostState.frightened);
-        else if (Input.GetKeyDown(KeyCode.Alpha3)) ghostAI.SetGhostCurrentState(GhostState.scatter);
-        else if (Input.GetKeyDown(KeyCode.Alpha4)) ghostAI.SetGhostCurrentState(GhostState.chase);
 
         CheckNearestPosition();
         RefreshCharacter();

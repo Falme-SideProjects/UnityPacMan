@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMovimentation : CharacterMovimentation
 {

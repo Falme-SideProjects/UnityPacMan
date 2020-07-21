@@ -1,13 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 namespace Tests
 {
     public class GhostAITests
     {
+        private const string mapAssetPath = "Assets/Scripts/Data/LevelMap/Map.txt";
+        private const int mapWidth = 28;
+        private const int mapHeight = 31;
+
         private GhostAI ghostAI;
         private List<List<ScenarioMazeElement>> facadeMap;
 
@@ -379,10 +381,10 @@ namespace Tests
             else
             {
                 ScenarioMap scenarioMap = new ScenarioMap();
-                TextAsset mapText = (TextAsset)UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Scripts/Data/LevelMap/Map.txt", typeof(TextAsset));
+                TextAsset mapText = (TextAsset)UnityEditor.AssetDatabase.LoadAssetAtPath(mapAssetPath, typeof(TextAsset));
                 string inlineMap = System.Text.RegularExpressions.Regex.Replace(mapText.text, @"\t|\n|\r", "");
                 scenarioMap.SetScenarioString(inlineMap);
-                return scenarioMap.GetScenarioGrid(28, 31);
+                return scenarioMap.GetScenarioGrid(mapWidth, mapHeight);
             }
         }
 

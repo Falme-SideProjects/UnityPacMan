@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class GhostAI
 {
     [SerializeField] private GhostType ghostType;
@@ -216,7 +216,6 @@ public class GhostAI
     {
         return (_y == 14 && _x == 0 && currentDirection.Equals(Direction.left)) ||
                 (_y == 14 && _x == (scenarioGrid[0].Count-1) && currentDirection.Equals(Direction.right));
-        return false;
     }
 
     public void SetPlayerMovimentation(PlayerMovimentation _playerMovimentation)

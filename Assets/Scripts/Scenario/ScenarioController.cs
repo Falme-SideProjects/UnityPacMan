@@ -44,11 +44,6 @@ public class ScenarioController : MonoBehaviour
         CheckCharactersMovimentBasedOnLocal();
         CheckForOverlaps();
         CheckTimerPhase();
-
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            ResetScenario();
-        }
     }
 
     private void InitializeGhostController()
