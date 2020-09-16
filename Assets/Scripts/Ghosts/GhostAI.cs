@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 [Serializable]
 public class GhostAI
@@ -14,6 +15,7 @@ public class GhostAI
     private PlayerMovimentation playerMovimentation;
     private GhostController[] ghostControllers;
 
+    private List<Direction> directionList;
 
 
     public GhostType GetGhostType()
@@ -29,6 +31,11 @@ public class GhostAI
     public GhostState GetGhostCurrentState()
     {
         return currentState;
+    }
+
+    public bool CompareGhostState(GhostState compareState)
+    {
+        return (int)currentState == (int)compareState;
     }
 
     public void SetGhostCurrentState(GhostState newState)
@@ -158,14 +165,24 @@ public class GhostAI
 
     public List<Direction> GetPermittedDirections(Vector2 characterPosition, Direction currentDirection)
     {
-        List<Direction> directionList = new List<Direction>();
+        Profiler.BeginSample("GetPermittedDirections 1");
+        bool p; 
+        p=!CompareDirection(currentDirection, Direction.down);
+        p = !CompareDirection(currentDirection, Direction.down);
+        p = !CompareDirection(currentDirection, Direction.down);
+        p = !CompareDirection(currentDirection, Direction.down);
+        Profiler.EndSample();
 
-        if (!this.scenarioGrid[(int)characterPosition.y - 1][(int)characterPosition.x].elementType.Equals(ElementType.wall) &&
-            !currentDirection.Equals(Direction.down)) 
+
+        if (directionList == null) directionList = new List<Direction>();
+        else directionList.Clear();
+
+        if (!this.scenarioGrid[(int)characterPosition.y - 1][(int)characterPosition.x].CompareElementType(ElementType.wall) &&
+            !CompareDirection(currentDirection, Direction.down)) 
             directionList.Add(Direction.up);
 
-        if (!this.scenarioGrid[(int)characterPosition.y+1][(int)characterPosition.x].elementType.Equals(ElementType.wall) &&
-            !currentDirection.Equals(Direction.up) &&
+        if (!this.scenarioGrid[(int)characterPosition.y+1][(int)characterPosition.x].CompareElementType(ElementType.wall) &&
+            !CompareDirection(currentDirection, Direction.up) &&
             (!GhostAtBoxDoor(characterPosition) || CanEnterBox())) 
             directionList.Add(Direction.down);
 
@@ -174,8 +191,8 @@ public class GhostAI
             directionList.Add(Direction.left);
         } else
         {
-            if (!this.scenarioGrid[(int)characterPosition.y][(int)characterPosition.x - 1].elementType.Equals(ElementType.wall) &&
-                !currentDirection.Equals(Direction.right)) 
+            if (!this.scenarioGrid[(int)characterPosition.y][(int)characterPosition.x - 1].CompareElementType(ElementType.wall) &&
+                !CompareDirection(currentDirection, Direction.right)) 
                 directionList.Add(Direction.left);
         }
 
@@ -185,8 +202,8 @@ public class GhostAI
         }
         else
         {
-            if (!this.scenarioGrid[(int)characterPosition.y][(int)characterPosition.x + 1].elementType.Equals(ElementType.wall) &&
-            !currentDirection.Equals(Direction.left))
+            if (!this.scenarioGrid[(int)characterPosition.y][(int)characterPosition.x + 1].CompareElementType(ElementType.wall) &&
+            !CompareDirection(currentDirection, Direction.left))
                 directionList.Add(Direction.right);
         }
 
@@ -209,13 +226,13 @@ public class GhostAI
 
     private bool CanEnterBox()
     {
-        return this.GetGhostCurrentState().Equals(GhostState.eaten);
+        return this.CompareGhostState(GhostState.eaten);// this.GetGhostCurrentState().Equals(GhostState.eaten);
     }
 
     public bool IsOnEdge(int _x, int _y, Direction currentDirection)
     {
-        return (_y == 14 && _x == 0 && currentDirection.Equals(Direction.left)) ||
-                (_y == 14 && _x == (scenarioGrid[0].Count-1) && currentDirection.Equals(Direction.right));
+        return (_y == 14 && _x == 0 && CompareDirection(currentDirection, Direction.left)) ||
+                (_y == 14 && _x == (scenarioGrid[0].Count-1) && CompareDirection(currentDirection, Direction.right));
     }
 
     public void SetPlayerMovimentation(PlayerMovimentation _playerMovimentation)
@@ -231,6 +248,11 @@ public class GhostAI
     public void SetGhostPosition(Vector2 position)
     {
         ghostPosition = position;
+    }
+
+    public bool CompareDirection(Direction directionA, Direction directionB)
+    {
+        return (int)directionA == (int)directionB;
     }
 
 }

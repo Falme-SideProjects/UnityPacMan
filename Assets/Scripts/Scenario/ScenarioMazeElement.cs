@@ -11,4 +11,9 @@ public class ScenarioMazeElement
     {
         this.elementType = _elementChar;
     }
+
+    public bool CompareElementType(ElementType _elementType)
+    {
+        return (int)elementType == (int)_elementType;
+    }
 }

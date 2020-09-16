@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Collections;
+using UnityEngine.Profiling;
 
 public class ScenarioController : MonoBehaviour
 {
     private ScenarioMap scenarioMap;
     private List<List<ScenarioMazeElement>> scenarioGrid;
     private PlayerMovimentation playerMovimentation;
+    private MovementPermission _movementPermission;
 
     private Coroutine powerPelletCoroutine;
 
@@ -16,6 +18,8 @@ public class ScenarioController : MonoBehaviour
     private int indexPhase = 0;
     private float timeForNextPhase = 0;
     private float currentTimePhase = 0;
+
+    private Vector2 _levelPosition;
 
     [Header("Data")]
     [SerializeField] private ScenarioDataScriptableObject scenarioData;
@@ -41,9 +45,17 @@ public class ScenarioController : MonoBehaviour
 
     void Update()
     {
+        Profiler.BeginSample("CheckCharactersMovimentBasedOnLocal");
         CheckCharactersMovimentBasedOnLocal();
+        Profiler.EndSample();
+
+        Profiler.BeginSample("CheckForOverlaps");
         CheckForOverlaps();
+        Profiler.EndSample();
+
+        Profiler.BeginSample("CheckTimerPhase");
         CheckTimerPhase();
+        Profiler.EndSample();
     }
 
     private void InitializeGhostController()
@@ -146,7 +158,7 @@ public class ScenarioController : MonoBehaviour
 
     private void CheckCharactersMovimentBasedOnLocal()
     {
-        Vector2 _levelPosition = GetLevelPosition();
+        _levelPosition = GetLevelPosition();
 
         for (int a = 0; a < ghostController.Length; a++)
         {
@@ -177,25 +189,25 @@ public class ScenarioController : MonoBehaviour
         int _x = (int)characterPosition.x;
         int _y = (int)characterPosition.y;
 
-        MovementPermission _movementPermission = characterMovimentation.GetMovementPermission();
+        _movementPermission = characterMovimentation.GetMovementPermission();
 
         _movementPermission.SetMovePermission(true, true, true, true);
 
         if (_y != 0)
             _movementPermission.
-                SetOneMovePermission(Direction.up, !scenarioGrid[_y - 1][_x].elementType.Equals(ElementType.wall));
+                SetOneMovePermission(Direction.up, !scenarioGrid[_y - 1][_x].CompareElementType(ElementType.wall));
 
         if (_y != scenarioData.levelHeight -1)
             _movementPermission.
-                SetOneMovePermission(Direction.down, !scenarioGrid[_y + 1][_x].elementType.Equals(ElementType.wall));
+                SetOneMovePermission(Direction.down, !scenarioGrid[_y + 1][_x].CompareElementType(ElementType.wall));
 
         if (_x != 0)
             _movementPermission.
-                SetOneMovePermission(Direction.left, !scenarioGrid[_y][_x-1].elementType.Equals(ElementType.wall));
+                SetOneMovePermission(Direction.left, !scenarioGrid[_y][_x-1].CompareElementType(ElementType.wall));
 
         if (_x != scenarioData.levelWidth - 1)
             _movementPermission.
-                SetOneMovePermission(Direction.right, !scenarioGrid[_y][_x+1].elementType.Equals(ElementType.wall));
+                SetOneMovePermission(Direction.right, !scenarioGrid[_y][_x+1].CompareElementType(ElementType.wall));
 
     }
 
@@ -205,8 +217,8 @@ public class ScenarioController : MonoBehaviour
         int _x = (int)characterPosition.x;
         int _y = (int)characterPosition.y;
 
-        if(scenarioGrid[_y][_x].elementType.Equals(ElementType.pacdot) ||
-            scenarioGrid[_y][_x].elementType.Equals(ElementType.power))
+        if(scenarioGrid[_y][_x].CompareElementType(ElementType.pacdot) ||
+            scenarioGrid[_y][_x].CompareElementType(ElementType.power))
         {
             if(scenarioGrid[_y][_x].elementCollectable)
             {
@@ -214,7 +226,7 @@ public class ScenarioController : MonoBehaviour
                 scenarioGrid[_y][_x].elementSpriteRenderer.enabled = false;
                 pelletsCollected++;
 
-                if (scenarioGrid[_y][_x].elementType.Equals(ElementType.pacdot))
+                if (scenarioGrid[_y][_x].CompareElementType(ElementType.pacdot))
                 {
                     scoreController.Score.AddScoreBasedOnItem(Items.pacdot);
                 }
@@ -264,11 +276,11 @@ public class ScenarioController : MonoBehaviour
         for(int a=0; a< _ghostPositions.Length; a++)
             if (Vector2.Distance(_ghostPositions[a], _playerPosition) == 0)
             {
-                if(ghostController[a].GetGhostAI().GetGhostCurrentState().Equals(GhostState.frightened))
+                if(ghostController[a].GetGhostAI().CompareGhostState(GhostState.frightened))
                 {
                     ghostController[a].GetGhostAI().SetGhostCurrentState(GhostState.eaten);
                     ghostController[a].UpdateGhostVisuals();
-                } else if(!ghostController[a].GetGhostAI().GetGhostCurrentState().Equals(GhostState.eaten))
+                } else if(!ghostController[a].GetGhostAI().CompareGhostState(GhostState.eaten))
                 {
                     PlayerDeath();
                 }
@@ -302,7 +314,7 @@ public class ScenarioController : MonoBehaviour
     {
         for (int a = 0; a < ghostController.Length; a++)
         {
-            if(ghostController[a].GetGhostAI().GetGhostCurrentState().Equals(GhostState.frightened))
+            if(ghostController[a].GetGhostAI().CompareGhostState(GhostState.frightened))
             {
                 ghostController[a].GetGhostAI().SetGhostCurrentState(GhostState.chase);
                 ghostController[a].UpdateGhostVisuals();
@@ -343,8 +355,8 @@ public class ScenarioController : MonoBehaviour
         if(indexPhase >= gameplayTimersData.ghostStateTimestamps.Length)
         {
             for (int a = 0; a < ghostController.Length; a++)
-                if (!ghostController[a].GetGhostAI().GetGhostCurrentState().Equals(GhostState.frightened) &&
-                !ghostController[a].GetGhostAI().GetGhostCurrentState().Equals(GhostState.eaten))
+                if (!ghostController[a].GetGhostAI().CompareGhostState(GhostState.frightened) &&
+                !ghostController[a].GetGhostAI().CompareGhostState(GhostState.eaten))
                     ghostController[a].GetGhostAI().SetGhostCurrentState(GhostState.chase);
             
             return;
@@ -354,8 +366,8 @@ public class ScenarioController : MonoBehaviour
 
         for(int a=0; a< ghostController.Length; a++)
         {
-            if(!ghostController[a].GetGhostAI().GetGhostCurrentState().Equals(GhostState.frightened) &&
-                !ghostController[a].GetGhostAI().GetGhostCurrentState().Equals(GhostState.eaten))
+            if(!ghostController[a].GetGhostAI().CompareGhostState(GhostState.frightened) &&
+                !ghostController[a].GetGhostAI().CompareGhostState(GhostState.eaten))
             {
                 ghostController[a].GetGhostAI().SetGhostCurrentState(gameplayTimersData.ghostStateTimestamps[indexPhase].ghostState);
                 ghostController[a].UpdateGhostVisuals();
